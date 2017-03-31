@@ -1,0 +1,89 @@
+=================================================================
+Alunos: Sidarta Lins, Marcelo Adriano, Ramoses Dantas. (Equipe 1)
+
+Projeto: Parte 1.1
+Disciplina: Compiladores
+Professor: Gustavo Carvalho
+Linguagem: C
+Data: 
+=================================================================
+
+Gramática Léxica:
+
+letter -> [a-z]|[A-Z]
+
+digit -> [0-9]
+
+Number -> ( digit { digit } ) 
+
+Identifier -> letter (letter | digit)*
+
+Type -> int | bool |
+
+Op_Ar -> + | -
+
+Op_Mul -> * | /
+
+Op_Bool -> == | < | > | <= | >= | !=
+
+Boolean -> TRUE | FALSE
+
+token ->	Identifier | Op_Ar | Op_Mul | Op_Bool | Number | Boolean | ( | ) | { | } 
+			| = | , | ; | if | else | while | do | void | break | continue | return | printf 
+			| main | int | return
+
+OBS: o símbolo usado para determinar um comentário de linha $
+
+
+______________________________________________________________________________
+
+Gramática Sintática:
+
+Program ::= DeclarationList "EoF"
+
+DeclarationList ::= Declaration+
+
+Declaration ::= (varDeclaration;) | funDeclaration 
+
+varDeclaration ::= Type varDec("," varDec)* 
+
+varDec ::=  Indentifier ("=" expression)? 
+
+funDeclaration ::= statement+
+
+statement ::=  selectionStmt 
+			| iterationStmt 
+			| assignmentStmt
+			| localDeclarationsStmt
+			| returnStmt 
+			| breakStmt
+			| continueStmt
+			| Identifier "("argms?")" ;
+
+
+
+localDeclarationsStmt ::= varDeclaration
+
+selectionStmt ::= if "(" expression ")" "{"statement+"}" ( else "{"statement+"}")? 
+
+iterationStmt ::= while "(" expression ")" "{" statement+ "}"
+
+assignmentStmt ::= Identifier "=" expression ;
+
+returnStmt ::= return ; | return expression ; 
+
+breakStmt ::= break ;
+
+continueStmt ::= continue;
+
+argms::= argms "," (Number|Identifier) | (Number|Indentifier)
+
+expression ::= simple_expression  ( ( Op_Bool ) simple_expression )?
+
+simple_expression ::= simple_expression Op_Ar term | term
+
+term ::= term ( Op_Mul factor) | factor 
+
+factor ::= number | TRUE | FALSE | (expression) | Identifier ((argms?))?
+
+argms::= argms ("," Number|Identifier) | (Number|Indentifier)
