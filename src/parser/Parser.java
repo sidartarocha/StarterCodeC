@@ -100,7 +100,8 @@ public class Parser {
 		//Analisa se o que foi passado é um VarDeclaratio ou uma function 
 		if (this.currentToken.getKind() == GrammarSymbols.INT 
 				|| this.currentToken.getKind() == GrammarSymbols.BOOLEAN) {
-			acceptIt();
+			//acceptIt();
+			accept(GrammarSymbols.INT);
 			accept(GrammarSymbols.ID);
 			if (this.currentToken.getKind() == GrammarSymbols.LP){
 				parseFunDeclaration();
@@ -110,9 +111,12 @@ public class Parser {
 					while (this.currentToken.getKind()!=GrammarSymbols.SEMICOLON){
 						parseVarDeclaration();
 					}
-					accept(GrammarSymbols.SEMICOLON);
+					
 
-				}	
+				}else if(this.currentToken.getKind() == GrammarSymbols.SEMICOLON){
+					accept(GrammarSymbols.SEMICOLON);
+				}
+				
 			}
 		}
 	}
@@ -127,7 +131,7 @@ public class Parser {
 	private void parseFunDeclaration() throws SyntacticException, LexicalException {
 		accept(GrammarSymbols.LP);
 		while (this.currentToken.getKind()!=GrammarSymbols.RP){
-			parseVarDeclaration();
+			parseParmDeclaration();
 		}
 		accept(GrammarSymbols.RP);
 		accept(GrammarSymbols.LB);
@@ -136,6 +140,23 @@ public class Parser {
 		}
 		accept(GrammarSymbols.RB);
 		
+	}
+
+	private void parseParmDeclaration() throws SyntacticException, LexicalException {
+		if(this.currentToken.getKind()==GrammarSymbols.BOOLEAN){
+			accept(GrammarSymbols.BOOLEAN);
+			accept(GrammarSymbols.ID);
+			if(this.currentToken.getKind()==GrammarSymbols.COMMA){
+				accept(GrammarSymbols.COMMA);
+			}
+		}
+		if(this.currentToken.getKind()==GrammarSymbols.INT){
+			accept(GrammarSymbols.INT);
+			accept(GrammarSymbols.ID);
+			if(this.currentToken.getKind()==GrammarSymbols.COMMA){
+				accept(GrammarSymbols.COMMA);
+			}
+		}
 	}
 
 	private void parseStatement() {
