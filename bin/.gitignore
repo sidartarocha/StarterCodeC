@@ -1,0 +1,8 @@
+/checker/
+/compiler/
+/encoder/
+/parser/
+/scanner/
+/util/
+/program.c
+/program.txt

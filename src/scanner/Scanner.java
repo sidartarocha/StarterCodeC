@@ -1,6 +1,10 @@
 package scanner;
 
 import compiler.Properties;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import compiler.Compiler;
 
 import parser.GrammarSymbols;
@@ -20,12 +24,13 @@ public class Scanner {
 	// The last char read from the source code
 	private char currentChar;
 	// The kind of the current token
-	private int currentKind;
+	private GrammarSymbols currentKind;
 	// Buffer to append characters read from file
 	private StringBuffer currentSpelling;
 	// Current line and column in the source file
 	private int line, column;
-	
+	// Keywords
+	private Map<String,GrammarSymbols> keywords;
 	/**
 	 * Default constructor
 	 */
@@ -33,20 +38,42 @@ public class Scanner {
 		this.file = new Arquivo(Properties.sourceCodeLocation);		
 		this.line = 0;
 		this.column = 0;
-		this.currentChar = this.file.readChar();
+		this.currentChar = this.file.readChar(); 
+		this.currentSpelling = new StringBuffer();
+		
+		keywords = new HashMap<String,GrammarSymbols>();
+		keywords.put("int", GrammarSymbols.INT);
+		keywords.put("boolean", GrammarSymbols.BOOLEAN);
+		keywords.put("main", GrammarSymbols.MAIN);
+		keywords.put("if", GrammarSymbols.IF);
+		keywords.put("else", GrammarSymbols.ELSE);
+		keywords.put("while", GrammarSymbols.WHILE);
+		keywords.put("true", GrammarSymbols.TRUE);
+		keywords.put("false", GrammarSymbols.FALSE);
+		keywords.put("void", GrammarSymbols.VOID);
+		keywords.put("while", GrammarSymbols.WHILE);
+		keywords.put("break", GrammarSymbols.BREAK);
+		keywords.put("printf", GrammarSymbols.PRINTF);
+		keywords.put("continue", GrammarSymbols.CONTINUE);
+		keywords.put("return", GrammarSymbols.RETURN);
+		
 	}
 	
 	/**
 	 * Returns the next token
 	 * @return
+	 * @throws LexicalException 
 	 */ //TODO
-	public Token getNextToken() {
-			// Initializes the string buffer
-			// Ignores separators
-			// Clears the string buffer
-			// Scans the next token
-		// Creates and returns a token for the lexema identified
-		return null;
+	public Token getNextToken() throws LexicalException {
+		while (this.isSeparator(this.currentChar)) {
+			this.scanSeparator();
+		}
+		
+		currentSpelling.delete(0, currentSpelling.length());
+		
+		GrammarSymbols kind = this.scanToken();
+		
+		return new Token(kind, currentSpelling.toString(), line, column);
 	}
 	
 	/**
@@ -55,7 +82,7 @@ public class Scanner {
 	 * @return
 	 */
 	private boolean isSeparator(char c) {
-		if ( c == '#' || c == ' ' || c == '\n' || c == '\t' ) {
+		if ( c == '$' || c == ' ' || c == '\n' || c == '\t' ) {
 			return true;
 		} else {
 			return false;
@@ -67,10 +94,13 @@ public class Scanner {
 	 * @throws LexicalException
 	 */ //TODO
 	private void scanSeparator() throws LexicalException {
-		// If it is a comment line
-			// Gets next char
-			// Reads characters while they are graphics or '\t'
-			// A command line should finish with a \n
+		if ( this.currentChar == '$' ) {
+			while (this.currentChar != '\n') {
+				this.getNextChar();
+			}
+		} else {
+			this.getNextChar();
+		}
 	}
 	
 	/**
@@ -150,11 +180,118 @@ public class Scanner {
 	 * @return
 	 * @throws LexicalException
 	 */ //TODO
-	private int scanToken() throws LexicalException {
-		// The initial automata state is 0
-		// While loop to simulate the automata
-		return -1;
+	private GrammarSymbols scanToken() throws LexicalException {
+		int estado = 0 ;
+		while(true) {
+			switch (estado) {
+			case 0:
+				if (currentChar == ';') {
+					estado = 1;
+				} else if (currentChar == '(') {
+					estado = 2 ;
+				} else if (currentChar == ')' ) {
+					estado = 3 ; 
+				} else if (currentChar == '{') {
+					estado = 4 ;
+				} else if (currentChar == '}') {
+					estado = 5 ;
+				} else if (currentChar == '=') {
+					estado = 6 ;
+				} else if (currentChar == '+' || currentChar == '-') {
+					estado = 7 ;
+				} else if (currentChar == '*' || currentChar == '/') {
+					estado = 8 ;
+				} else if (currentChar == ',') {
+					estado = 9 ;
+				} else if (currentChar == '<') {
+					estado = 10 ;
+				} else if (currentChar == '>') {
+					estado = 10 ;
+				} else if (currentChar == '!') {
+					estado = 10 ;
+				} else if (currentChar == '\000') {
+					estado = 13 ;
+				} else if (isLetter(currentChar)) {
+					estado = 14 ;
+				} else if (isDigit(currentChar)) {
+					estado = 15 ;
+				} else {
+					estado = 17 ;
+					break ;
+				}
+
+				//pegando o proximo char
+				getNextChar();
+				break;
+
+			case 1 :
+				return GrammarSymbols.SEMICOLON;
+
+			case 2 :
+				return GrammarSymbols.LP;
+				//				if(isLetter(currentChar)){
+				//					estado = 17;
+				//				}else if(isDigit(currentChar)) {
+				//					estado = 18;
+				//				}else if(currentChar == ')'){
+				//					estado = 3;
+				//				}
+				//				break;
+			case 3 :
+				return GrammarSymbols.RP;
+
+			case 4 :
+				return GrammarSymbols.LB;
+
+			case 5 :
+				return GrammarSymbols.RP;
+
+			case 6 :
+				if(currentChar == '='){
+					return GrammarSymbols.OP_BOOL;
+				}
+				return GrammarSymbols.EQUAL;
+
+			case 7 :
+				return GrammarSymbols.OP_AR;
+
+			case 8 :
+				return GrammarSymbols.OP_MUL;
+
+			case 9 :
+				return GrammarSymbols.COMMA;
+
+			case 10 :
+				if (currentChar == '=') {
+					return GrammarSymbols.OP_BOOL;
+				}else {
+					return GrammarSymbols.OP_BOOL;
+				}
+
+			case 13 :
+				return GrammarSymbols.EOT;
+
+
+			case 14 :
+				while (isLetter(currentChar) || isDigit(currentChar)) {
+					getNextChar();					
+				}
+
+				if (keywords.containsKey(currentSpelling.toString())) {
+					return keywords.get(currentSpelling.toString());
+				} else {
+					return GrammarSymbols.ID;
+				}
+
+
+
+			}
+		}
+
 	}
-	
-	
 }
+
+
+
+
+

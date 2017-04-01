@@ -1,5 +1,7 @@
 package scanner;
 
+import parser.GrammarSymbols;
+
 /**
  * Token class
  * @version 2010-september-04
@@ -10,7 +12,7 @@ package scanner;
 public class Token {
 
 	// The token kind
-	private int kind;
+	private GrammarSymbols kind;
 	// The token spelling
 	private String spelling;
 	// The line and column that the token was found
@@ -23,7 +25,7 @@ public class Token {
 	 * @param line
 	 * @param column
 	 */
-	public Token(int kind, String spelling, int line, int column) {
+	public Token(GrammarSymbols kind, String spelling, int line, int column) {
 		this.kind = kind;
 		this.spelling = spelling;
 		this.line = line;
@@ -34,7 +36,7 @@ public class Token {
 	 * Returns token kind
 	 * @return
 	 */
-	public int getKind() {
+	public GrammarSymbols getKind() {
 		return kind;
 	}
 

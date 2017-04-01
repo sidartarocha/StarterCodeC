@@ -2,6 +2,7 @@ package compiler;
 
 import parser.Parser;
 import parser.SyntacticException;
+import scanner.LexicalException;
 import util.AST.AST;
 import util.symbolsTable.IdentificationTable;
 
@@ -20,8 +21,9 @@ public class Compiler {
 	/**
 	 * Compiler start point
 	 * @param args - none
+	 * @throws LexicalException 
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws LexicalException {
 		// Initializes the identification table with the reserved words 
 		Compiler.initIdentificationTable();
 		
