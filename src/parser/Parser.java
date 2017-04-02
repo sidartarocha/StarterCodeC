@@ -145,7 +145,10 @@ public class Parser {
 		accept(GrammarSymbols.RP);
 		accept(GrammarSymbols.LB);
 		while(this.currentToken.getKind()!=GrammarSymbols.RB){
-			parseStatement();
+			int validacaoStatmant = parseStatement(); 
+			if(validacaoStatmant==1){ //esse if tem a função de impedir que o 
+				break;
+			}
 		}
 		accept(GrammarSymbols.RB);
 		
@@ -168,7 +171,7 @@ public class Parser {
 		}
 	}
 
-	private void parseStatement() throws SyntacticException, LexicalException {
+	private int parseStatement() throws SyntacticException, LexicalException {
 		while (this.currentToken.getKind()!=GrammarSymbols.RB){
 			if(this.currentToken.getKind()==GrammarSymbols.IF){
 				parseSelectionStmt();
@@ -206,14 +209,17 @@ public class Parser {
 							parseAgrms();
 						}
 					accept(GrammarSymbols.RP);
+					accept(GrammarSymbols.SEMICOLON);
 					
 				}
 			}else{
 				System.out.println("entrou no break");
-				break;
+				return 1;
+				
 			}
 			
 		}
+		return 0;
 		
 	}
 
@@ -255,7 +261,10 @@ public class Parser {
 		accept(GrammarSymbols.RP);
 		accept(GrammarSymbols.LB);
 		while (this.currentToken.getKind()!=GrammarSymbols.RB) {
-			parseStatement();
+			int validacaoStatmant = parseStatement(); 
+			if(validacaoStatmant==1){ //esse if tem a função de impedir que o 
+				break;
+			}
 		}
 		accept(GrammarSymbols.RB);
 		
@@ -268,7 +277,10 @@ public class Parser {
 		accept(GrammarSymbols.RP);
 		accept(GrammarSymbols.LB);
 		while (this.currentToken.getKind()!=GrammarSymbols.RB) {
-			parseStatement();
+			int validacaoStatmant = parseStatement(); 
+			if(validacaoStatmant==1){ //esse if tem a função de impedir que o 
+				break;
+			}
 		}
 		accept(GrammarSymbols.RB);
 		if(this.currentToken.getKind()==GrammarSymbols.ELSE){
@@ -276,7 +288,10 @@ public class Parser {
 			if(this.currentToken.getKind()==GrammarSymbols.LB){
 				accept(GrammarSymbols.LB);
 				while (this.currentToken.getKind()!=GrammarSymbols.RB) {
-					parseStatement();
+					int validacaoStatmant = parseStatement(); 
+					if(validacaoStatmant==1){ //esse if tem a função de impedir que o 
+						break;
+					}
 				}
 			}else if(this.currentToken.getKind()==GrammarSymbols.IF){
 				parseSelectionStmt();

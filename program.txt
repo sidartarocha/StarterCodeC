@@ -1,6 +1,0 @@
-int main(){
-	else
-        {
-         printf(a,b,1);  
-         }
-}
