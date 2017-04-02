@@ -2,13 +2,11 @@ package parser;
 
 import scanner.Scanner;
 
-import com.sun.xml.internal.fastinfoset.vocab.ParserVocabulary;
-import com.sun.xml.internal.ws.api.pipe.ThrowableContainerPropertySet;
 
-import jdk.nashorn.internal.runtime.ParserException;
+
 import scanner.LexicalException;
 import scanner.Token;
-import sun.java2d.pipe.hw.AccelDeviceEventListener;
+
 import util.AST.AST;
 
 /**
