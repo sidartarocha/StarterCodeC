@@ -213,7 +213,9 @@ public class Parser {
 					
 				}
 			}else{
-				System.out.println("entrou no break");
+//		caso ele entre nesse return quer dizer que ele achou um token que não esta 
+//		nesse laço e não era esperado
+//		
 				return 1;
 				
 			}
