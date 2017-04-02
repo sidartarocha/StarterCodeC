@@ -208,6 +208,9 @@ public class Parser {
 					accept(GrammarSymbols.RP);
 					
 				}
+			}else{
+				System.out.println("entrou no break");
+				break;
 			}
 			
 		}
@@ -270,10 +273,15 @@ public class Parser {
 		accept(GrammarSymbols.RB);
 		if(this.currentToken.getKind()==GrammarSymbols.ELSE){
 			accept(GrammarSymbols.ELSE);
-			accept(GrammarSymbols.LB);
-			while (this.currentToken.getKind()!=GrammarSymbols.RB) {
-				parseStatement();
+			if(this.currentToken.getKind()==GrammarSymbols.LB){
+				accept(GrammarSymbols.LB);
+				while (this.currentToken.getKind()!=GrammarSymbols.RB) {
+					parseStatement();
+				}
+			}else if(this.currentToken.getKind()==GrammarSymbols.IF){
+				parseSelectionStmt();
 			}
+			
 			accept(GrammarSymbols.RB);
 		}
 		

@@ -248,12 +248,11 @@ public class Scanner {
 
 			case 6 :
 				if(currentChar == '='){
-					estado = 15;
-					break;
-					//return GrammarSymbols.OP_BOOL;
+					estado = 10;
+					getNextChar();
+				}else{
+					return GrammarSymbols.EQUAL;
 				}
-				return GrammarSymbols.EQUAL;
-
 			case 7 :
 				return GrammarSymbols.OP_AR;
 
@@ -265,7 +264,8 @@ public class Scanner {
 
 			case 10 :
 				if (currentChar == '=') {
-					estado = 15;
+					estado = 16;
+					getNextChar();
 					break;
 					//return GrammarSymbols.OP_BOOL;
 				}else {
@@ -288,8 +288,12 @@ public class Scanner {
 				}
 
 			case 15: 
+				while (isDigit(currentChar)) {
+					getNextChar();					
+				}
+				return GrammarSymbols.NUMBER;
+			case 16:
 				return GrammarSymbols.OP_BOOL;
-
 			}
 		}
 
