@@ -1,8 +1,30 @@
-int a;
-int b;
-int c;
+int main(){
+	
 
-int func (int d) {
-	a = b + d ;
-	printf a ;
-}
+      int a,b;
+      int menor,maior,resto;
+      
+      printf(a,b);
+      
+      if(a>b)
+      {
+      menor=b;
+      maior=a;
+      }else
+      {
+       menor=a;
+      maior=b;
+      }
+      
+      if(resto<=0)
+      {
+       printf(a,b,menor);
+      }else if (menor == 0)
+       {
+                        
+       printf(a,b,resto);       
+        }else
+        {
+         printf(a,b,1);  
+         }
+         }

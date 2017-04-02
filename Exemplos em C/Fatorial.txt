@@ -1,0 +1,32 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int main()
+
+{ int numero,fatorial,contador;
+    printf("Digite o numero a ser fatorado \n");
+    scanf("%d", &numero);
+    fatorial = 1;
+    contador = numero;
+        if (numero <0) {
+        printf("\nEntrada invalida");
+    }
+            if (numero==0) {
+            printf ("0! = 1");
+    }
+                if (numero==1) {
+                printf ("\nA forma fatorada e", fatorial);
+    }
+                    printf("%d! = ",numero);
+                    while (contador>1){
+
+                    fatorial = fatorial*numero;
+                    printf("%d * ",numero);
+                    numero = numero - 1;
+
+                    contador = contador - 1;
+                    }
+
+                    printf("1 = %d", fatorial);
+    return 0;
+}

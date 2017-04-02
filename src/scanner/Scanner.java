@@ -244,11 +244,13 @@ public class Scanner {
 				return GrammarSymbols.LB;
 
 			case 5 :
-				return GrammarSymbols.RP;
+				return GrammarSymbols.RB;
 
 			case 6 :
 				if(currentChar == '='){
-					return GrammarSymbols.OP_BOOL;
+					estado = 15;
+					break;
+					//return GrammarSymbols.OP_BOOL;
 				}
 				return GrammarSymbols.EQUAL;
 
@@ -263,7 +265,9 @@ public class Scanner {
 
 			case 10 :
 				if (currentChar == '=') {
-					return GrammarSymbols.OP_BOOL;
+					estado = 15;
+					break;
+					//return GrammarSymbols.OP_BOOL;
 				}else {
 					return GrammarSymbols.OP_BOOL;
 				}
@@ -283,7 +287,8 @@ public class Scanner {
 					return GrammarSymbols.ID;
 				}
 
-
+			case 15: 
+				return GrammarSymbols.OP_BOOL;
 
 			}
 		}
