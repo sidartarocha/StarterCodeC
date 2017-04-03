@@ -18,7 +18,7 @@ Number -> ( digit { digit } )
 
 ID -> letter (letter | digit)*
 
-Type -> int | bool |
+Type -> int | boolean |
 
 Op_Ar -> + | -
 
@@ -49,7 +49,7 @@ Declaration ::= (varDeclaration ";") | funDeclaration
 varDeclaration ::= "Type" "Indentifier" ("," "Indentifier")*
 
 funDeclaration ::=
-	("void" | Type ) Indentifier "(" (varDeclaration (","varDeclaration)*)?	")" 
+	("void" | "Type" ) Indentifier "(" (varDeclaration (","varDeclaration)*)?	")" 
 	"{" statement+ "}"
 
 statement ::=  selectionStmt 
@@ -59,21 +59,21 @@ statement ::=  selectionStmt
 			| returnStmt 
 			| breakStmt
 			| continueStmt
-			| printf ( expression );
+			| printf "(" expression ")"";"
 
 localDeclarationsStmt ::= varDeclaration ";"
 
-selectionStmt ::= if "(" expression ")" "{"statement+"}" ( else "{"statement+"}")? 
+selectionStmt ::= "if" "(" expression ")" "{"statement+"}" ( else "{"statement+"}")? 
 
-iterationStmt ::= while "(" expression ")" "{" statement+ "}"
+iterationStmt ::= "while" "(" expression ")" "{" statement+ "}"
 
-returnStmt ::= return (; | expression ;) 
+returnStmt ::= "return" (";" | expression ";") 
 
-breakStmt ::= break ;
+breakStmt ::= "break" ;
 
-continueStmt ::= continue;
+continueStmt ::= "continue";
 
-argms::= expression (, expression)*
+argms::= expression ("," expression)*
 
 expression ::= simple_expression ( ( Op_Bool ) simple_expression )?
 
@@ -81,4 +81,4 @@ simple_expression ::= term (Op_Ar term)*
 
 term ::= factor (Op_Mul factor)* 
 
-factor ::= number | TRUE | FALSE | (expression) | ID ((argms?))?
+factor ::= number | TRUE | FALSE | (expression) | ID ("("argms?")")?
