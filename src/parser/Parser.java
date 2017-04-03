@@ -292,12 +292,12 @@ public class Parser {
 					if(validacaoStatmant==1){ //esse if tem a função de impedir que o 
 						break;
 					}
-				}
+				}accept(GrammarSymbols.RB);
 			}else if(this.currentToken.getKind()==GrammarSymbols.IF){
 				parseSelectionStmt();
 			}
 			
-			accept(GrammarSymbols.RB);
+			//
 		}
 		
 	}
