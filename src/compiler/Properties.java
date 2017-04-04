@@ -10,6 +10,6 @@ package compiler;
 public interface Properties {
 
 	// The source code file
-	public static final String sourceCodeLocation = "teste.c";
+	public static final String sourceCodeLocation = "exemplos/foo.c";
 	
 }
