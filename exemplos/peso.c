@@ -9,4 +9,3 @@ int main() {
       }else{
             printf(k+l);}
 }
-}
