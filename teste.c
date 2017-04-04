@@ -1,4 +1,4 @@
-int main() {
+void main() {
       int idade; 
       idade = 20;
       printf(2+j);

@@ -90,18 +90,24 @@ public class Parser {
 	
 	private void parseDeclaration() throws SyntacticException, LexicalException {
 		//Analisa se o que foi passado é um void se positivo chama parseFunDeclaration
-		if (this.currentToken.getKind() == GrammarSymbols.VOID) {
-			acceptIt();
-			accept(GrammarSymbols.ID);
-			accept(GrammarSymbols.LP);
-			parseFunDeclaration();
-			
-		}			
+//		if (this.currentToken.getKind() == GrammarSymbols.VOID) {
+//			accept(GrammarSymbols.VOID);;
+//			accept(GrammarSymbols.ID);
+//			accept(GrammarSymbols.LP);
+//			parseFunDeclaration();
+//			
+//		}			
 		//Analisa se o que foi passado é um VarDeclaratio ou uma function 
 		if (this.currentToken.getKind() == GrammarSymbols.INT 
-				|| this.currentToken.getKind() == GrammarSymbols.BOOLEAN) {
-			//acceptIt();
-			accept(GrammarSymbols.INT);
+				|| this.currentToken.getKind() == GrammarSymbols.BOOLEAN || this.currentToken.getKind() == GrammarSymbols.VOID) {
+			if (this.currentToken.getKind() == GrammarSymbols.INT){
+				accept(GrammarSymbols.INT);
+			}else if(this.currentToken.getKind() == GrammarSymbols.BOOLEAN){
+				accept(GrammarSymbols.BOOLEAN);
+			}else if(this.currentToken.getKind() == GrammarSymbols.VOID){
+				accept(GrammarSymbols.VOID);
+			}
+			
 			if(this.currentToken.getKind()==GrammarSymbols.MAIN){
 				accept(GrammarSymbols.MAIN);
 			}else if(this.currentToken.getKind()==GrammarSymbols.ID){
