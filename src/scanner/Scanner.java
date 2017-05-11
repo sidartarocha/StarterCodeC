@@ -44,7 +44,7 @@ public class Scanner {
 		keywords = new HashMap<String,GrammarSymbols>();
 		keywords.put("int", GrammarSymbols.INT);
 		keywords.put("boolean", GrammarSymbols.BOOLEAN);
-		keywords.put("main", GrammarSymbols.MAIN);
+		//keywords.put("main", GrammarSymbols.MAIN);
 		keywords.put("if", GrammarSymbols.IF);
 		keywords.put("else", GrammarSymbols.ELSE);
 		keywords.put("while", GrammarSymbols.WHILE);
@@ -226,26 +226,14 @@ public class Scanner {
 
 			case 1 :
 				return GrammarSymbols.SEMICOLON;
-
 			case 2 :
-				return GrammarSymbols.LP;
-				//				if(isLetter(currentChar)){
-				//					estado = 17;
-				//				}else if(isDigit(currentChar)) {
-				//					estado = 18;
-				//				}else if(currentChar == ')'){
-				//					estado = 3;
-				//				}
-				//				break;
+				return GrammarSymbols.LP;				
 			case 3 :
 				return GrammarSymbols.RP;
-
 			case 4 :
 				return GrammarSymbols.LB;
-
 			case 5 :
 				return GrammarSymbols.RB;
-
 			case 6 :
 				if(currentChar == '='){
 					estado = 10;
@@ -256,13 +244,10 @@ public class Scanner {
 				}
 			case 7 :
 				return GrammarSymbols.OP_AR;
-
 			case 8 :
 				return GrammarSymbols.OP_MUL;
-
 			case 9 :
 				return GrammarSymbols.COMMA;
-
 			case 10 :
 				if (currentChar == '=') {
 					estado = 16;
@@ -275,7 +260,6 @@ public class Scanner {
 
 			case 13 :
 				return GrammarSymbols.EOT;
-
 
 			case 14 :
 				while (isLetter(currentChar) || isDigit(currentChar)) {

@@ -90,64 +90,99 @@ public class Parser {
 		 * Esse if faz a verificação se esta sendo recebido um token tipo INT, BOOLEAN ou VOID
 		 *  
 		 */
-		if (this.currentToken.getKind() == GrammarSymbols.INT||
-				this.currentToken.getKind() == GrammarSymbols.BOOLEAN || 
-				this.currentToken.getKind() == GrammarSymbols.VOID){
-					
-					/*
-					 * Esse if faz o accept para cada um dos tipos de token acima
-					 */
-					if (this.currentToken.getKind() == GrammarSymbols.INT){
-						accept(GrammarSymbols.INT);
-					}else{
-						if(this.currentToken.getKind() == GrammarSymbols.BOOLEAN){
-							accept(GrammarSymbols.BOOLEAN);
-						} else {
-							if(this.currentToken.getKind() == GrammarSymbols.VOID){
-								accept(GrammarSymbols.VOID);
-							}
-						}
-					}
-					
-					/*
-					 * If de verificação do token ID ou Main
-					 */
-					if(this.currentToken.getKind()==GrammarSymbols.MAIN){
-						accept(GrammarSymbols.MAIN);
-					}else{
-						if(this.currentToken.getKind()==GrammarSymbols.ID){
-							accept(GrammarSymbols.ID);	
-						}
-					}
-			
-					/*
-					 * verificação se existe "("
-					 */
-					if (this.currentToken.getKind() == GrammarSymbols.LP){
-						parseFunDeclaration();
-					} else {
-						if(this.currentToken.getKind() == GrammarSymbols.COMMA) {
-							accept(GrammarSymbols.COMMA);
-							while (this.currentToken.getKind()!=GrammarSymbols.SEMICOLON){
-								parseVarDeclaration();
-							}
-							accept(GrammarSymbols.SEMICOLON);
-						}else{
-							//TODO
-							//if(this.currentToken.getKind() == GrammarSymbols.SEMICOLON){
-								accept(GrammarSymbols.SEMICOLON);
-							//}
-						}
-					}
-				}
+	if (this.currentToken.getKind() == GrammarSymbols.INT){
+		accept(GrammarSymbols.INT);
+		accept(GrammarSymbols.ID);
+		if(this.currentToken.getKind() == GrammarSymbols.COMMA){
+				accept(GrammarSymbols.COMMA);
+				parseVarDeclaration();
+				accept(GrammarSymbols.SEMICOLON);
+		}else{
+				parseFunDeclaration();
+		}
+	}else{
+		if(this.currentToken.getKind() == GrammarSymbols.BOOLEAN){
+			accept(GrammarSymbols.BOOLEAN);
+			accept(GrammarSymbols.ID);
+			if(this.currentToken.getKind() == GrammarSymbols.COMMA){
+				accept(GrammarSymbols.COMMA);
+				parseVarDeclaration();
+				accept(GrammarSymbols.SEMICOLON);
+			}else{
+				parseFunDeclaration();
+			}
+		} else {
+			accept(GrammarSymbols.VOID);
+			accept(GrammarSymbols.ID);
+			parseFunDeclaration();
+		}
 	}
+					
+	/*
+	 * Nesse ponto é esperado um ID
+	 */
+	
+//	accept(GrammarSymbols.ID);	
+//	if(this.currentToken.getKind() == GrammarSymbols.COMMA){
+//		accept(GrammarSymbols.COMMA);
+//		parseVarDeclaration();
+//		accept(GrammarSymbols.SEMICOLON);
+//	}else{
+//		parseFunDeclaration();
+//	}
+	
+
+	/*
+	 * verificação se existe "("
+	 */
+//	if (this.currentToken.getKind() == GrammarSymbols.LP){
+//		parseFunDeclaration();
+//	} else {
+//		if(this.currentToken.getKind() == GrammarSymbols.COMMA) {
+//			accept(GrammarSymbols.COMMA);
+//			while (this.currentToken.getKind()!=GrammarSymbols.SEMICOLON){
+//				parseVarDeclaration();
+//			}
+//			accept(GrammarSymbols.SEMICOLON);
+//		}
+//			else{
+//			//TODO
+//			//if(this.currentToken.getKind() == GrammarSymbols.SEMICOLON){
+//				accept(GrammarSymbols.SEMICOLON);
+//			//}
+//		}
+	}
+				
+	
 
 	//Declaração de Variavel
 	private void parseVarDeclaration() throws SyntacticException, LexicalException {
-		accept(GrammarSymbols.ID);
-		if(this.currentToken.getKind() == GrammarSymbols.COMMA){
-			accept(GrammarSymbols.COMMA);
-		}	
+		if(this.currentToken.getKind() == GrammarSymbols.INT){
+			accept(GrammarSymbols.INT);
+			while (this.currentToken.getKind()==GrammarSymbols.ID){
+				accept(GrammarSymbols.ID);
+				if(this.currentToken.getKind() == GrammarSymbols.COMMA){
+					accept(GrammarSymbols.COMMA);
+				}else{
+					//if(this.currentToken.getKind() == GrammarSymbols.SEMICOLON){
+						break;
+						//accept(GrammarSymbols.COMMA);
+				}
+			}
+		}else{
+			accept(GrammarSymbols.BOOLEAN);
+			while (this.currentToken.getKind()==GrammarSymbols.ID){
+				accept(GrammarSymbols.ID);
+				if(this.currentToken.getKind() == GrammarSymbols.COMMA){
+					accept(GrammarSymbols.COMMA);
+				}else{
+					//if(this.currentToken.getKind() == GrammarSymbols.SEMICOLON){
+						break;
+						//accept(GrammarSymbols.COMMA);
+				}
+			}
+		}
+		
 	}
 	
 	//Declaração de função
@@ -160,7 +195,7 @@ public class Parser {
 		accept(GrammarSymbols.LB);
 		while(this.currentToken.getKind()!=GrammarSymbols.RB){
 			int validacaoStatmant = parseStatement(); 
-			if(validacaoStatmant==1){ //esse if tem a função de impedir que o 
+			if(validacaoStatmant==1){ //esse if tem a função de impedir que o codigo entre em loop
 				break;
 			}
 		}
@@ -169,19 +204,8 @@ public class Parser {
 	}
 
 	private void parseParmDeclaration() throws SyntacticException, LexicalException {
-		if(this.currentToken.getKind()==GrammarSymbols.BOOLEAN){
-			accept(GrammarSymbols.BOOLEAN);
-			accept(GrammarSymbols.ID);
-			if(this.currentToken.getKind()==GrammarSymbols.COMMA){
-				accept(GrammarSymbols.COMMA);
-			}
-		}
-		if(this.currentToken.getKind()==GrammarSymbols.INT){
-			accept(GrammarSymbols.INT);
-			accept(GrammarSymbols.ID);
-			if(this.currentToken.getKind()==GrammarSymbols.COMMA){
-				accept(GrammarSymbols.COMMA);
-			}
+		while(this.currentToken.getKind()!=GrammarSymbols.RP){
+			parseVarDeclaration();
 		}
 	}
 
@@ -207,38 +231,31 @@ public class Parser {
 									accept(GrammarSymbols.CONTINUE);
 									//continue;
 								}else{
-									if(this.currentToken.getKind()==GrammarSymbols.INT){
-										//declaração de variavel local
-										accept(GrammarSymbols.INT);
-										while(this.currentToken.getKind()!=GrammarSymbols.SEMICOLON){
+									//Declaração de Variavel Local
+									if(this.currentToken.getKind()==GrammarSymbols.INT ||
+											this.currentToken.getKind()==GrammarSymbols.BOOLEAN){
+										//while(this.currentToken.getKind()!=GrammarSymbols.SEMICOLON){
 											parseVarDeclaration();
-										}
+										//}
 										accept(GrammarSymbols.SEMICOLON);
-									}else{
-										if(this.currentToken.getKind()==GrammarSymbols.BOOLEAN){
-											//declaração de variavel local
-											accept(GrammarSymbols.BOOLEAN);
-											parseVarDeclaration();
-											accept(GrammarSymbols.SEMICOLON);
-										}else{
-											if(this.currentToken.getKind()==GrammarSymbols.ID){
-												accept(GrammarSymbols.ID);
-												if(this.currentToken.getKind()==GrammarSymbols.EQUAL){
-													accept(GrammarSymbols.EQUAL);
-													parseExpression();
-													accept(GrammarSymbols.SEMICOLON);
-												}													
-											}else{
-												if(this.currentToken.getKind()==GrammarSymbols.LP){
-													accept(GrammarSymbols.LP);
-													while(this.currentToken.getKind()!=GrammarSymbols.RP){
-														parseAgrms();
-													}
-												accept(GrammarSymbols.RP);
+									}else{//inicialização de variavel
+										if(this.currentToken.getKind()==GrammarSymbols.ID){
+											accept(GrammarSymbols.ID);
+											if(this.currentToken.getKind()==GrammarSymbols.EQUAL){
+												accept(GrammarSymbols.EQUAL);
+												parseExpression();
 												accept(GrammarSymbols.SEMICOLON);
-												}else{
-													return 1;
+											}													
+										}else{
+											if(this.currentToken.getKind()==GrammarSymbols.LP){
+												accept(GrammarSymbols.LP);
+												while(this.currentToken.getKind()!=GrammarSymbols.RP){
+													parseAgrms();
 												}
+											accept(GrammarSymbols.RP);
+											accept(GrammarSymbols.SEMICOLON);
+											}else{
+												return 1;
 											}
 										}
 									}
