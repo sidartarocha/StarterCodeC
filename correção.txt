@@ -2,6 +2,6 @@
 
 	Main não deveria ser uma palavra reservada. Na gramática, em statement, ID deveria ser identifier. Ao escrever “int *;” o codigo entrou em loop. Se escrever “int a” sem o ;, o compilador diz que o código é correto. Não está clara para mim a função de “validacaoStatmant”. Permite um comando que seja um id sem ; em seguida.
 
-	Em vários pontos do código há problemas por if-else que foram escritos como if-elseif. Logo, se não cair em nenhum dos casos, não dá erro e, pela gramática, necessariamente deveria entrar ou no if ou no else.
+	Em vários pontos do código há problemas por if-else que foram escritos como if-elseif. Logo, se não cair em nenhum dos casos, não dá erro e, pela gramática, necessariamente deveria entrar ou no if ou no else. resolvido
 
 	No parse do print (como em outros locais), tem um while onde deveria ser um if. Desta forma permite escrever algo como “print(a b);”. O método parseExpression tem um if extra errado. O parse de termo e expressão aritmética têm if e não while. Isto permite escrever expressões erradas.

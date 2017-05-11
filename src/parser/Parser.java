@@ -340,18 +340,18 @@ public class Parser {
 
 	private void parseExpression() throws SyntacticException, LexicalException {
 		parseSimpleExpression();
-		if(this.currentToken.getKind()==GrammarSymbols.OP_BOOL){
+		while(this.currentToken.getKind()==GrammarSymbols.OP_BOOL){
 			accept(GrammarSymbols.OP_BOOL);
-			if(this.currentToken.getKind()==GrammarSymbols.OP_BOOL){
-				accept(GrammarSymbols.OP_BOOL);
-			}parseSimpleExpression();
+			//if(this.currentToken.getKind()==GrammarSymbols.OP_BOOL){
+				//accept(GrammarSymbols.OP_BOOL);
+			parseSimpleExpression();
 		}
 		
 	}
 
 	private void parseSimpleExpression() throws SyntacticException, LexicalException {
 		parseTerm();
-		if(this.currentToken.getKind()==GrammarSymbols.OP_AR){
+		while(this.currentToken.getKind()==GrammarSymbols.OP_AR){
 			accept(GrammarSymbols.OP_AR);
 			parseTerm();
 		}
@@ -359,7 +359,7 @@ public class Parser {
 
 	private void parseTerm() throws SyntacticException, LexicalException {
 		parseFactor();
-		if(this.currentToken.getKind()==GrammarSymbols.OP_MUL){
+		while(this.currentToken.getKind()==GrammarSymbols.OP_MUL){
 			accept(GrammarSymbols.OP_MUL);
 			parseFactor();
 		}

@@ -250,6 +250,7 @@ public class Scanner {
 				if(currentChar == '='){
 					estado = 10;
 					getNextChar();
+					break;
 				}else{
 					return GrammarSymbols.EQUAL;
 				}
