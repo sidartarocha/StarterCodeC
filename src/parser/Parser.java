@@ -287,7 +287,7 @@ public class Parser {
 	private void parsePrintfStmt() throws SyntacticException, LexicalException {
 		accept(GrammarSymbols.PRINTF);
 		accept(GrammarSymbols.LP);
-		while(this.currentToken.getKind()!=GrammarSymbols.RP){
+		if(this.currentToken.getKind()!=GrammarSymbols.RP){
 			parseExpression();
 		}
 		accept(GrammarSymbols.RP);
@@ -359,8 +359,6 @@ public class Parser {
 		parseSimpleExpression();
 		while(this.currentToken.getKind()==GrammarSymbols.OP_BOOL){
 			accept(GrammarSymbols.OP_BOOL);
-			//if(this.currentToken.getKind()==GrammarSymbols.OP_BOOL){
-				//accept(GrammarSymbols.OP_BOOL);
 			parseSimpleExpression();
 		}
 		

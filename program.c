@@ -8,7 +8,7 @@ void main() {
       }else if(idade <= 15){
             printf(c+d);
       }else{
-            printf(e+f);}
+            printf(e + f * 2);}
       funcao(b, c, d);
 }
 
