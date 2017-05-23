@@ -8,6 +8,7 @@ import scanner.LexicalException;
 import scanner.Token;
 
 import util.AST.AST;
+import util.AST.Program;
 
 /**
  * Parser class
@@ -68,23 +69,29 @@ public class Parser {
 	 * @throws LexicalException
 	 */ 
 	public AST parse() throws SyntacticException, LexicalException {
-		this.parseProgram();
+		//this.parseProgram();
+		parseProgram();
 		accept(GrammarSymbols.EOT);
 		
 		return null;
 	}
 
-	private void parseProgram() throws SyntacticException, LexicalException {
+	private Program parseProgram() throws SyntacticException, LexicalException {
+		Program programAST = null;
+		
 		while (this.currentToken.getKind() != GrammarSymbols.EOT){
-			parseDeclaration();
-		}	
+			
+			programAST = new Program(parseDeclaration();)
+			
+		}
+		return programAST;	
 	}		
 
 	/*	Chamada da função parserDeclaration
 	 *	tipo void 
 	 * 
 	*/
-	private void parseDeclaration() throws SyntacticException, LexicalException {
+	private Declaration parseDeclaration() throws SyntacticException, LexicalException {
 		
 		/*Analisa se o que foi passado é um VarDeclaratio ou uma functionDeclaration
 		 * Esse if faz a verificação se esta sendo recebido um token tipo INT, BOOLEAN ou VOID
