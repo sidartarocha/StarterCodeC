@@ -1,5 +1,8 @@
 package util.AST;
 
+import checker.SemanticException;
+import checker.Visitor;
+
 /**
  * AST class
  * @version 2010-september-04
@@ -18,6 +21,20 @@ public abstract class AST {
 		return str.toString();
 	}
 	
-	public abstract String toString(int level);
+	public String toString(int level){
+		return getSpaces(level); 
+	}
+		
+	
 	
 }
+
+/*
+public String getSpaces(int level) {
+	StringBuffer str = new StringBuffer();
+	while( level>0 ) {
+		str.append(" ");
+		level--;
+	}
+	return str.toString();
+*/

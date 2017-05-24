@@ -2,12 +2,13 @@ package parser;
 
 import scanner.Scanner;
 
-
+import java.util.ArrayList;
 
 import scanner.LexicalException;
 import scanner.Token;
 
 import util.AST.AST;
+import util.AST.Declaration;
 import util.AST.Program;
 
 /**
@@ -70,21 +71,24 @@ public class Parser {
 	 */ 
 	public AST parse() throws SyntacticException, LexicalException {
 		//this.parseProgram();
-		parseProgram();
-		accept(GrammarSymbols.EOT);
+//		parseProgram();
 		
-		return null;
+		
+		return parseProgram();
 	}
 
 	private Program parseProgram() throws SyntacticException, LexicalException {
-		Program programAST = null;
-		
+		Program prog = null;
+		ArrayList<Declaration> declaration = new ArrayList<Declaration>();
 		while (this.currentToken.getKind() != GrammarSymbols.EOT){
 			
-			programAST = new Program(parseDeclaration();)
+			declaration.add(parseDeclaration());
 			
 		}
-		return programAST;	
+		prog = new Program(declaration);
+		accept(GrammarSymbols.EOT);
+		
+		return prog;	
 	}		
 
 	/*	Chamada da função parserDeclaration
