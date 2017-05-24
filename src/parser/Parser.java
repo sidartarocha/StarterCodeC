@@ -10,7 +10,9 @@ import scanner.Token;
 import util.AST.AST;
 import util.AST.Declaration;
 import util.AST.FunDeclaration;
+import util.AST.Identifier;
 import util.AST.Program;
+import util.AST.TypeAst;
 import util.AST.VarDeclaration;
 
 /**
@@ -105,10 +107,13 @@ public class Parser {
 		Declaration decl = null;
 		ArrayList<VarDeclaration> varD = new ArrayList<VarDeclaration>();
 		ArrayList<FunDeclaration> funD = new ArrayList<FunDeclaration>();
-		
+		Identifier auxID;
+		TypeAst auxType; 
 		
 			if (this.currentToken.getKind() == GrammarSymbols.INT){
+				auxType = currentToken.getKind();
 				accept(GrammarSymbols.INT);
+				auxID = this.currentToken.getKind();
 				accept(GrammarSymbols.ID);
 				if(this.currentToken.getKind() == GrammarSymbols.COMMA){
 						accept(GrammarSymbols.COMMA);
@@ -172,7 +177,7 @@ public class Parser {
 	}
 	
 	//Declaracao de funcao
-	private void parseFunDeclaration() throws SyntacticException, LexicalException {
+	private FunDeclaration parseFunDeclaration() throws SyntacticException, LexicalException {
 		accept(GrammarSymbols.LP);
 		while (this.currentToken.getKind()!=GrammarSymbols.RP){
 			parseParmDeclaration();
