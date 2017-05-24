@@ -1,7 +1,7 @@
 package util.AST;
 
 import checker.SemanticException;
-import checker.Visitor;
+//import checker.Visitor;
 
 /**
  * AST class
