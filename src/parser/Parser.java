@@ -111,9 +111,9 @@ public class Parser {
 		TypeAst auxType; 
 		
 			if (this.currentToken.getKind() == GrammarSymbols.INT){
-				auxType = currentToken.getKind();
-				accept(GrammarSymbols.INT);
-				auxID = this.currentToken.getKind();
+				auxType = parseType(GrammarSymbols.INT);
+				//accept(GrammarSymbols.INT);
+				auxID = parserIdentifier(GrammarSymbols.ID);
 				accept(GrammarSymbols.ID);
 				if(this.currentToken.getKind() == GrammarSymbols.COMMA){
 						accept(GrammarSymbols.COMMA);
@@ -144,6 +144,16 @@ public class Parser {
 	}
 				
 	
+
+	private TypeAst parseType(GrammarSymbols i) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	private Identifier parserIdentifier(GrammarSymbols i) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	//Declaracao de Variavel
 	private VarDeclaration parseVarDeclaration() throws SyntacticException, LexicalException {
@@ -191,6 +201,7 @@ public class Parser {
 			}
 		}
 		accept(GrammarSymbols.RB);
+		return null;
 		
 	}
 
