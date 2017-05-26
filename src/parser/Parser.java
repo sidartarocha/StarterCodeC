@@ -4,6 +4,8 @@ import scanner.Scanner;
 
 import java.util.ArrayList;
 
+import com.sun.xml.internal.messaging.saaj.util.ParserPool;
+
 import scanner.LexicalException;
 import scanner.Token;
 
@@ -47,7 +49,7 @@ public class Parser {
 	private void accept(GrammarSymbols kind) throws SyntacticException, LexicalException {
 		//funcao para verificar o token corrente
 		if (this.currentToken.getKind() == kind) {
-			System.out.println("(" + "\"" + currentToken.getSpelling() +"\"" + "," + currentToken.getKind() + ")");
+			//System.out.println("(" + "\"" + currentToken.getSpelling() +"\"" + "," + currentToken.getKind() + ")");
 			this.acceptIt();
 		}else{
 			throw new SyntacticException("SyntacticException error: expecting " 
@@ -74,11 +76,13 @@ public class Parser {
 	 * @throws LexicalException
 	 */ 
 	public AST parse() throws SyntacticException, LexicalException {
-		//this.parseProgram();
-//		parseProgram();
+			Program ast = parseProgram();
 		
-		
-		return parseProgram();
+			accept(GrammarSymbols.EOT);
+
+			return ast;
+			
+
 	}
 
 	private Program parseProgram() throws SyntacticException, LexicalException {
@@ -90,7 +94,7 @@ public class Parser {
 			
 		}
 		prog = new Program(declaration);
-		accept(GrammarSymbols.EOT);
+		
 		
 		return prog;	
 	}		

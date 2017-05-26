@@ -2,7 +2,7 @@ package util.AST;
 
 import java.util.ArrayList;
 
-public class Declaration {
+public class Declaration extends AST{
 	private ArrayList<VarDeclaration> varD;
 	private ArrayList<FunDeclaration> funcD;
 

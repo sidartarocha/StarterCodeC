@@ -28,15 +28,16 @@ public class Compiler {
 		Compiler.initIdentificationTable();
 		
 		// Creates the parser object
-		Parser p = new Parser();
+		Parser p ;//= new Parser();
 		
 		// Creates the AST object
 		AST astRoot = null;
 		
 		try {
 			// Parses the source code
+			p = new Parser();
 			astRoot = p.parse();
-			System.out.println("\n-- AST STRUCTURE --");
+			//System.out.println("\n-- AST STRUCTURE --");
 			if ( astRoot != null ) {
 				System.out.println(astRoot.toString(0));
 			}

@@ -21,9 +21,11 @@ public abstract class AST {
 		return str.toString();
 	}
 	
-	public String toString(int level){
-		return getSpaces(level); 
-	}
+	public abstract String toString(int level);
+	
+//	public String toString(int level){
+//		return getSpaces(level); 
+//	}
 		
 	//public abstract Object visit (Visitor v, Object args) throws SemanticException;
 	
