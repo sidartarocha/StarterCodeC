@@ -4,8 +4,6 @@ import scanner.Scanner;
 
 import java.util.ArrayList;
 
-import com.sun.xml.internal.messaging.saaj.util.ParserPool;
-
 import scanner.LexicalException;
 import scanner.Token;
 
@@ -123,47 +121,14 @@ public class Parser {
 			auxType = parseType();
 			auxID = new Identifier(this.currentToken); 
 			accept(GrammarSymbols.ID);
-			if(this.currentToken.getKind() == GrammarSymbols.COMMA){
-				accept(GrammarSymbols.COMMA);
-				varD.add(parseFunDeclaration(auxType, auxID));
-				accept(GrammarSymbols.SEMICOLON);
+			if(this.currentToken.getKind() == GrammarSymbols.LP){
+				//accept(GrammarSymbols.LP);
+				funD.add(parseFunDeclaration(auxType, auxID));
 			}else{
-				funD.add(parseFunDeclaration());
+				varD.add(parseVarDeclaration(auxType, auxID));
 			}
 			
 		}
-		
-		
-		
-//			if (this.currentToken.getKind() == GrammarSymbols.INT){
-//				auxType = parseType(GrammarSymbols.INT);
-//				//accept(GrammarSymbols.INT);
-//				auxID = parserIdentifier(GrammarSymbols.ID);
-//				accept(GrammarSymbols.ID);
-//				if(this.currentToken.getKind() == GrammarSymbols.COMMA){
-//						accept(GrammarSymbols.COMMA);
-//						varD.add(parseVarDeclaration());
-//						accept(GrammarSymbols.SEMICOLON);
-//				}else{
-//						funD.add(parseFunDeclaration());
-//				}
-//			}else{
-//				if(this.currentToken.getKind() == GrammarSymbols.BOOLEAN){
-//					accept(GrammarSymbols.BOOLEAN);
-//					accept(GrammarSymbols.ID);
-//					if(this.currentToken.getKind() == GrammarSymbols.COMMA){
-//						accept(GrammarSymbols.COMMA);
-//						varD.add(parseVarDeclaration());
-//						accept(GrammarSymbols.SEMICOLON);
-//					}else{
-//						funD.add(parseFunDeclaration());
-//					}
-//				} else {
-//					accept(GrammarSymbols.VOID);
-//					accept(GrammarSymbols.ID);
-//					funD.add(parseFunDeclaration());
-//				}
-//			}
 	decl = new Declaration(varD, funD);		
 	return decl;
 	}
@@ -187,36 +152,54 @@ public class Parser {
 	
 	}
 
-
-
 	//Declaracao de Variavel
-	private VarDeclaration parseVarDeclaration() throws SyntacticException, LexicalException {
-		if(this.currentToken.getKind() == GrammarSymbols.INT){
-			accept(GrammarSymbols.INT);
-			while (this.currentToken.getKind()==GrammarSymbols.ID){
+	private VarDeclaration parseVarDeclaration(TypeAst auxType, Identifier auxID) throws SyntacticException, LexicalException {
+		//TypeAst auxType = auxType;
+		//Identifier auxID = auxID;
+		
+		ArrayList<Identifier> auxIDlist = new ArrayList<Identifier>();
+		auxIDlist.add(auxID);
+		if(this.currentToken.getKind() == GrammarSymbols.COMMA){
+			while(this.currentToken.getKind() != GrammarSymbols.SEMICOLON ){
+				accept(GrammarSymbols.COMMA);
+				auxIDlist.add(new Identifier(this.currentToken));
 				accept(GrammarSymbols.ID);
-				if(this.currentToken.getKind() == GrammarSymbols.COMMA){
-					accept(GrammarSymbols.COMMA);
-				}else{
-					//if(this.currentToken.getKind() == GrammarSymbols.SEMICOLON){
-						break;
-						//accept(GrammarSymbols.COMMA);
-				}
 			}
+			accept(GrammarSymbols.SEMICOLON);
 		}else{
-			accept(GrammarSymbols.BOOLEAN);
-			while (this.currentToken.getKind()==GrammarSymbols.ID){
-				accept(GrammarSymbols.ID);
-				if(this.currentToken.getKind() == GrammarSymbols.COMMA){
-					accept(GrammarSymbols.COMMA);
-				}else{
-					//if(this.currentToken.getKind() == GrammarSymbols.SEMICOLON){
-						break;
-						//accept(GrammarSymbols.COMMA);
-				}
-			}
+			accept(GrammarSymbols.SEMICOLON);
 		}
-		return null;
+		
+		
+		return new VarDeclaration(auxType, auxIDlist); 
+		
+		
+		//		if(this.currentToken.getKind() == GrammarSymbols.INT){
+//			accept(GrammarSymbols.INT);
+//			while (this.currentToken.getKind()==GrammarSymbols.ID){
+//				accept(GrammarSymbols.ID);
+//				if(this.currentToken.getKind() == GrammarSymbols.COMMA){
+//					accept(GrammarSymbols.COMMA);
+//				}else{
+//					//if(this.currentToken.getKind() == GrammarSymbols.SEMICOLON){
+//						break;
+//						//accept(GrammarSymbols.COMMA);
+//				}
+//			}
+//		}else{
+//			accept(GrammarSymbols.BOOLEAN);
+//			while (this.currentToken.getKind()==GrammarSymbols.ID){
+//				accept(GrammarSymbols.ID);
+//				if(this.currentToken.getKind() == GrammarSymbols.COMMA){
+//					accept(GrammarSymbols.COMMA);
+//				}else{
+//					//if(this.currentToken.getKind() == GrammarSymbols.SEMICOLON){
+//						break;
+//						//accept(GrammarSymbols.COMMA);
+//				}
+//			}
+//		}
+//		return null;
 		
 	}
 	
@@ -241,7 +224,11 @@ public class Parser {
 
 	private void parseParmDeclaration() throws SyntacticException, LexicalException {
 		while(this.currentToken.getKind()!=GrammarSymbols.RP){
-			parseVarDeclaration();
+			
+			TypeAst auxType = parseType();
+			Identifier auxID = new Identifier(this.currentToken); 
+			accept(GrammarSymbols.ID);
+			parseVarDeclaration(auxType, auxID);
 		}
 	}
 
@@ -271,7 +258,10 @@ public class Parser {
 									if(this.currentToken.getKind()==GrammarSymbols.INT ||
 											this.currentToken.getKind()==GrammarSymbols.BOOLEAN){
 										//while(this.currentToken.getKind()!=GrammarSymbols.SEMICOLON){
-											parseVarDeclaration();
+											TypeAst auxType = parseType();
+											Identifier auxID = new Identifier(this.currentToken); 
+											accept(GrammarSymbols.ID);
+											parseVarDeclaration(auxType, auxID);
 										//}
 										accept(GrammarSymbols.SEMICOLON);
 									}else{//inicialização de variavel

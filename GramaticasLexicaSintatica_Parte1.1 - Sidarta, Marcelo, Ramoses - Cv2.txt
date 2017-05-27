@@ -49,7 +49,7 @@ Declaration ::= (varDeclaration ";") | funDeclaration
 varDeclaration ::= "Type" "Indentifier" ("," "Indentifier")*
 
 funDeclaration ::=
-	("void" | "Type" ) Indentifier "(" (varDeclaration (","varDeclaration)*)?	")" 
+	("void" | "Type" ) Indentifier "(" localatribfun?	")" 
 	"{" statement+ "}"
 
 statement ::=  selectionStmt 
@@ -60,6 +60,10 @@ statement ::=  selectionStmt
 			| breakStmt
 			| continueStmt
 			| printf "(" expression ")"";"
+			
+localatribfun ::= atribVar | varDeclaration 
+
+atribVar = ID ("=" "number")? ","
 
 localDeclarationsStmt ::= varDeclaration ";"
 
