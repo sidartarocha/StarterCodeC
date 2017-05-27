@@ -105,7 +105,7 @@ public class Parser {
 	*/
 	private Declaration parseDeclaration() throws SyntacticException, LexicalException {
 		/*Analisa se o que foi passado  um VarDeclaratio ou uma functionDeclaration
-		 * Esse if faz a verificação se esta sendo recebido um token tipo INT, BOOLEAN ou VOID
+		 * Esse if faz a verificacao se esta sendo recebido um token tipo INT, BOOLEAN ou VOID
 		 *  
 		 */
 		Declaration decl = null;
@@ -114,50 +114,80 @@ public class Parser {
 		Identifier auxID;
 		TypeAst auxType; 
 		
-			if (this.currentToken.getKind() == GrammarSymbols.INT){
-				auxType = parseType(GrammarSymbols.INT);
-				//accept(GrammarSymbols.INT);
-				auxID = parserIdentifier(GrammarSymbols.ID);
-				accept(GrammarSymbols.ID);
-				if(this.currentToken.getKind() == GrammarSymbols.COMMA){
-						accept(GrammarSymbols.COMMA);
-						varD.add(parseVarDeclaration());
-						accept(GrammarSymbols.SEMICOLON);
-				}else{
-						funD.add(parseFunDeclaration());
-				}
+		if(this.currentToken.getKind()== GrammarSymbols.VOID){
+			auxType = parseType();
+			auxID = new Identifier(this.currentToken); 
+			accept(GrammarSymbols.ID);
+			funD.add(parseFunDeclaration(auxType, auxID));
+		}else{
+			auxType = parseType();
+			auxID = new Identifier(this.currentToken); 
+			accept(GrammarSymbols.ID);
+			if(this.currentToken.getKind() == GrammarSymbols.COMMA){
+				accept(GrammarSymbols.COMMA);
+				varD.add(parseFunDeclaration(auxType, auxID));
+				accept(GrammarSymbols.SEMICOLON);
 			}else{
-				if(this.currentToken.getKind() == GrammarSymbols.BOOLEAN){
-					accept(GrammarSymbols.BOOLEAN);
-					accept(GrammarSymbols.ID);
-					if(this.currentToken.getKind() == GrammarSymbols.COMMA){
-						accept(GrammarSymbols.COMMA);
-						varD.add(parseVarDeclaration());
-						accept(GrammarSymbols.SEMICOLON);
-					}else{
-						funD.add(parseFunDeclaration());
-					}
-				} else {
-					accept(GrammarSymbols.VOID);
-					accept(GrammarSymbols.ID);
-					funD.add(parseFunDeclaration());
-				}
+				funD.add(parseFunDeclaration());
 			}
+			
+		}
+		
+		
+		
+//			if (this.currentToken.getKind() == GrammarSymbols.INT){
+//				auxType = parseType(GrammarSymbols.INT);
+//				//accept(GrammarSymbols.INT);
+//				auxID = parserIdentifier(GrammarSymbols.ID);
+//				accept(GrammarSymbols.ID);
+//				if(this.currentToken.getKind() == GrammarSymbols.COMMA){
+//						accept(GrammarSymbols.COMMA);
+//						varD.add(parseVarDeclaration());
+//						accept(GrammarSymbols.SEMICOLON);
+//				}else{
+//						funD.add(parseFunDeclaration());
+//				}
+//			}else{
+//				if(this.currentToken.getKind() == GrammarSymbols.BOOLEAN){
+//					accept(GrammarSymbols.BOOLEAN);
+//					accept(GrammarSymbols.ID);
+//					if(this.currentToken.getKind() == GrammarSymbols.COMMA){
+//						accept(GrammarSymbols.COMMA);
+//						varD.add(parseVarDeclaration());
+//						accept(GrammarSymbols.SEMICOLON);
+//					}else{
+//						funD.add(parseFunDeclaration());
+//					}
+//				} else {
+//					accept(GrammarSymbols.VOID);
+//					accept(GrammarSymbols.ID);
+//					funD.add(parseFunDeclaration());
+//				}
+//			}
 	decl = new Declaration(varD, funD);		
 	return decl;
 	}
 				
 	
 
-	private TypeAst parseType(GrammarSymbols i) {
-		// TODO Auto-generated method stub
-		return null;
+	private TypeAst parseType() throws SyntacticException, LexicalException {
+		TypeAst type = new TypeAst(this.currentToken);
+		
+		if(this.currentToken.getKind() == GrammarSymbols.INT){
+			accept(GrammarSymbols.INT);
+		}else{
+			if(this.currentToken.getKind() == GrammarSymbols.BOOLEAN){
+				accept(GrammarSymbols.BOOLEAN );
+			}else{
+				accept(GrammarSymbols.VOID);
+			}
+		}
+		
+		return type;
+	
 	}
 
-	private Identifier parserIdentifier(GrammarSymbols i) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 
 	//Declaracao de Variavel
 	private VarDeclaration parseVarDeclaration() throws SyntacticException, LexicalException {
@@ -191,7 +221,7 @@ public class Parser {
 	}
 	
 	//Declaracao de funcao
-	private FunDeclaration parseFunDeclaration() throws SyntacticException, LexicalException {
+	private FunDeclaration parseFunDeclaration(TypeAst auxType, Identifier auxID) throws SyntacticException, LexicalException {
 		accept(GrammarSymbols.LP);
 		while (this.currentToken.getKind()!=GrammarSymbols.RP){
 			parseParmDeclaration();
