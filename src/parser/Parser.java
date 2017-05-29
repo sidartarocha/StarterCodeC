@@ -3,17 +3,35 @@ package parser;
 import scanner.Scanner;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import scanner.LexicalException;
 import scanner.Token;
 
 import util.AST.AST;
 import util.AST.Declaration;
+import util.AST.Expression;
+import util.AST.FactorBoolean;
+import util.AST.FactorExpression;
+import util.AST.FactorNumber;
 import util.AST.FunDeclaration;
 import util.AST.Identifier;
+import util.AST.ParamDeclaration;
+import util.AST.ParmDeclaration;
 import util.AST.Program;
+import util.AST.SelectionStmt;
+import util.AST.SimpleExpression;
+import util.AST.Statement;
+import util.AST.TBoolean;
+import util.AST.TOpAr;
+import util.AST.TOpBool;
+import util.AST.TOpMul;
+import util.AST.Term;
+import util.AST.Tinteger;
+import util.AST.TokenCommand;
 import util.AST.TypeAst;
 import util.AST.VarDeclaration;
+import util.AST.factorID;
 
 /**
  * Parser class
@@ -64,7 +82,7 @@ public class Parser {
 	 */
 	
 	private void acceptIt() throws SyntacticException, LexicalException {
-		//Fun��o para aceitar o token corrente
+		//Fun��o para aceitar o token corrente
 		this.currentToken = this.scanner.getNextToken();
 	}
 
@@ -205,53 +223,69 @@ public class Parser {
 	
 	//Declaracao de funcao
 	private FunDeclaration parseFunDeclaration(TypeAst auxType, Identifier auxID) throws SyntacticException, LexicalException {
+		ArrayList<ParamDeclaration> paramDeclaration = new ArrayList<ParamDeclaration>();
+		ArrayList<Statement> statement = new ArrayList<Statement>();
 		accept(GrammarSymbols.LP);
 		while (this.currentToken.getKind()!=GrammarSymbols.RP){
-			parseParmDeclaration();
+			paramDeclaration.add(parseParamDeclaration());
+			if(this.currentToken.getKind()==GrammarSymbols.COMMA){
+				accept(GrammarSymbols.COMMA);
+			}else{
+				break;
+			}
 		}
 		accept(GrammarSymbols.RP);
 		accept(GrammarSymbols.LB);
 		while(this.currentToken.getKind()!=GrammarSymbols.RB){
-			int validacaoStatmant = parseStatement(); 
-			if(validacaoStatmant==1){ //esse if tem a função de impedir que o codigo entre em loop
-				break;
-			}
+			statement.add(parseStatement());
+//			int validacaoStatmant = parseStatement(); 
+//			if(validacaoStatmant==1){ //esse if tem a função de impedir que o codigo entre em loop
+//				break;
+//			}
 		}
 		accept(GrammarSymbols.RB);
-		return null;
+		return new FunDeclaration(auxType, auxID, paramDeclaration, statement   );
 		
 	}
 
-	private void parseParmDeclaration() throws SyntacticException, LexicalException {
-		while(this.currentToken.getKind()!=GrammarSymbols.RP){
-			
+	private ParamDeclaration parseParamDeclaration() throws SyntacticException, LexicalException {
+		if (this.currentToken.getKind()!=GrammarSymbols.RP){ 
 			TypeAst auxType = parseType();
 			Identifier auxID = new Identifier(this.currentToken); 
 			accept(GrammarSymbols.ID);
-			parseVarDeclaration(auxType, auxID);
+			return new ParamDeclaration(auxType, auxID);	
+			//parseVarDeclaration(auxType, auxID);
+		}else{
+			return null;	
 		}
+		
 	}
 
-	private int parseStatement() throws SyntacticException, LexicalException {
+	private Statement parseStatement() throws SyntacticException, LexicalException {
+		ArrayList<Statement> statementlist = new ArrayList<Statement>();
 		while (this.currentToken.getKind()!=GrammarSymbols.RB){
 			if(this.currentToken.getKind()==GrammarSymbols.IF){
-				parseSelectionStmt();
+				statementlist.add(new SelectionStmt(parseSelectionStmt());
 			}else{
 				if (this.currentToken.getKind()==GrammarSymbols.WHILE){
-					parseIterationStmt();
+					return new Statement(parseIterationStmt());
 				}else{
 					if(this.currentToken.getKind()==GrammarSymbols.RETURN){
-					parseReturnStmt();
+						return new Statement(parseReturnStmt());
 					}else{
 						if (this.currentToken.getKind()==GrammarSymbols.PRINTF) {
-							parsePrintfStmt();
+							return new Statement(parsePrintfStmt());
 						}else{
 							if (this.currentToken.getKind()==GrammarSymbols.BREAK){
+								TokenCommand tokenCommand = new TokenCommand(this.currentToken.getKind());
 								accept(GrammarSymbols.BREAK);
+								return tokenCommand;
 								//break;
 							}else{
 								if(this.currentToken.getKind()==GrammarSymbols.CONTINUE){
+									TokenCommand tokenCommand = new TokenCommand(this.currentToken.getKind());
 									accept(GrammarSymbols.CONTINUE);
+									return tokenCommand;
 									//continue;
 								}else{
 									//Declaração de Variavel Local
@@ -292,7 +326,7 @@ public class Parser {
 				}
 			}
 		}
-		return 0;
+		return statement;
 	}	
 									
 			
@@ -348,18 +382,21 @@ public class Parser {
 		
 	}
 
-	private void parseSelectionStmt() throws SyntacticException, LexicalException {
+	private SelectionStmt parseSelectionStmt() throws SyntacticException, LexicalException {
+		Expression expression;
+		ArrayList<Statement> statemant =  new ArrayList<Statement>();
 		accept(GrammarSymbols.IF);
 		accept(GrammarSymbols.LP);
-			parseExpression();
+			expression = parseExpression();
 		accept(GrammarSymbols.RP);
 		accept(GrammarSymbols.LB);
 		while (this.currentToken.getKind()!=GrammarSymbols.RB) {
-			int validacaoStatmant = parseStatement(); 
-			if(validacaoStatmant==1){ 
-				//esse if tem a função de impedir que o 
-				break;
-			}
+			statemant.add(parseStatement());
+			//			int validacaoStatmant = parseStatement(); 
+//			if(validacaoStatmant==1){ 
+//				//esse if tem a função de impedir que o 
+//				break;
+//			}
 		}
 		accept(GrammarSymbols.RB);
 		if(this.currentToken.getKind()==GrammarSymbols.ELSE){
@@ -367,10 +404,11 @@ public class Parser {
 			if(this.currentToken.getKind()==GrammarSymbols.LB){
 				accept(GrammarSymbols.LB);
 				while (this.currentToken.getKind()!=GrammarSymbols.RB) {
-					int validacaoStatmant = parseStatement(); 
-					if(validacaoStatmant==1){ //esse if tem a função de impedir que o 
-						break;
-					}
+					statemant.add(parseStatement());
+//					int validacaoStatmant = parseStatement(); 
+//					if(validacaoStatmant==1){ //esse if tem a função de impedir que o 
+//						break;
+//					}
 				}accept(GrammarSymbols.RB);
 			}else if(this.currentToken.getKind()==GrammarSymbols.IF){
 				parseSelectionStmt();
@@ -379,61 +417,81 @@ public class Parser {
 			//
 		}
 		
-	}
-
-	private void parseExpression() throws SyntacticException, LexicalException {
-		parseSimpleExpression();
-		while(this.currentToken.getKind()==GrammarSymbols.OP_BOOL){
-			accept(GrammarSymbols.OP_BOOL);
-			parseSimpleExpression();
-		}
+		return new SelectionStmt(expression, statemant);
 		
 	}
 
-	private void parseSimpleExpression() throws SyntacticException, LexicalException {
-		parseTerm();
+	private Expression parseExpression() throws SyntacticException, LexicalException {
+		SimpleExpression headSExpression = parseSimpleExpression();
+		TBoolean tBool = null;
+		SimpleExpression bodyExpression = null;
+		while(this.currentToken.getKind()==GrammarSymbols.OP_BOOL){
+			tBool = new TBoolean(this.currentToken);
+			accept(GrammarSymbols.OP_BOOL);
+			bodyExpression = parseSimpleExpression();
+		}
+		return new Expression(headSExpression, tBool, bodyExpression);
+		
+	}
+
+	private SimpleExpression parseSimpleExpression() throws SyntacticException, LexicalException {
+		Term headTerm = parseTerm();
+		TOpAr tOpAr = null;
+		Term bodyTerm = parseTerm();
 		while(this.currentToken.getKind()==GrammarSymbols.OP_AR){
+			tOpAr = new TOpAr(currentToken);
 			accept(GrammarSymbols.OP_AR);
-			parseTerm();
+			bodyTerm = parseTerm();
 		}
+		return new SimpleExpression(headTerm, tOpAr, bodyTerm);
 	}
 
-	private void parseTerm() throws SyntacticException, LexicalException {
-		parseFactor();
+	private Term parseTerm() throws SyntacticException, LexicalException {
+		FactorExpression headFactor = parseFactor();
+		TOpMul tOpMul = null;
+		FactorExpression bodyFactor = parseFactor();
 		while(this.currentToken.getKind()==GrammarSymbols.OP_MUL){
+			tOpMul = new TOpMul(currentToken);
 			accept(GrammarSymbols.OP_MUL);
-			parseFactor();
+			bodyFactor = parseFactor();
 		}
+		return new Term(headFactor, tOpMul, bodyFactor);
 	}
 
-	private void parseFactor() throws SyntacticException, LexicalException {
+	private FactorExpression parseFactor() throws SyntacticException, LexicalException {
+		FactorExpression factorExpresion = null;
 		if(this.currentToken.getKind()==GrammarSymbols.TRUE){
+			factorExpresion = new FactorBoolean(new TBoolean(currentToken));
 			accept(GrammarSymbols.TRUE);
 		}else{
 			if(this.currentToken.getKind()==GrammarSymbols.FALSE){
-			accept(GrammarSymbols.FALSE);
+				factorExpresion = new FactorBoolean(new TBoolean(currentToken));
+				accept(GrammarSymbols.FALSE);
 			}else{
 				if(this.currentToken.getKind()==GrammarSymbols.ID){
+					factorExpresion = new factorID(new Identifier(this.currentToken));
 					accept(GrammarSymbols.ID);
-					if(this.currentToken.getKind()==GrammarSymbols.LP){
-						accept(GrammarSymbols.LP);
-						while(this.currentToken.getKind()!=GrammarSymbols.RP){
-							parseAgrms();
-						}accept(GrammarSymbols.RP);
-					}
-				}else{
-					if(this.currentToken.getKind()==GrammarSymbols.COMMA){
-						accept(GrammarSymbols.COMMA);
-						parseAgrms();
+//					if(this.currentToken.getKind()==GrammarSymbols.LP){
+//						accept(GrammarSymbols.LP);
+//						while(this.currentToken.getKind()!=GrammarSymbols.RP){
+//							parseAgrms();
+//						}accept(GrammarSymbols.RP);
+//					}
+//				}else{
+//					if(this.currentToken.getKind()==GrammarSymbols.COMMA){
+//						accept(GrammarSymbols.COMMA);
+//						parseAgrms();
 					}else{
 						//if(this.currentToken.getKind()==GrammarSymbols.NUMBER){
-							accept(GrammarSymbols.NUMBER);
+						factorExpresion = new FactorNumber(new Tinteger(this.currentToken));	
+						accept(GrammarSymbols.NUMBER);
 						//}
 					}
 			
 				}
 			}
-		}
+		
+		return factorExpresion;
 	}
 	
 

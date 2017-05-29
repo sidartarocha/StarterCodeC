@@ -15,6 +15,7 @@ public class VarDeclaration extends AST{
 	@Override
     public String toString(int level) {
         StringBuilder s = new StringBuilder();
+        s.append("Var Declaration Start");
         s.append(this.getSpaces(level));
         s.append(auxType.toString());
         s.append(" ");
@@ -22,11 +23,11 @@ public class VarDeclaration extends AST{
         for(Identifier iD : auxIDlist)
             s.append(iD.toString(level + 1));
         
-        s.append(" receives: \n");	
+//        s.append(" receives: \n");	
         
         
 //        s.append(expression.toString(level + 1));
-
+        s.append("Var Declaration End");
         return s.toString();
     }
 	
