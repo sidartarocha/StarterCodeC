@@ -13,4 +13,7 @@ public class TypeAst extends Terminal {
 	    public String toString() {
 	        return this.getToken().getKind().name();
 	    }
+
+
+	
 }

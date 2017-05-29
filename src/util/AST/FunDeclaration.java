@@ -19,22 +19,22 @@ public class FunDeclaration extends AST {
 	@Override
     public String toString(int level) {
         StringBuilder s = new StringBuilder();
-        s.append("Function Start");
-        s.append(this.getSpaces(level));
-        s.append(auxType.toString());
-        s.append(" ");
-        s.append(this.getSpaces(level));
-        s.append(auxID.toString());
-        s.append(" ");
+        s.append("Function Start \n");
+        s.append(this.getSpaces(level+1));
+        s.append(auxType.toString() + '\n');
+        //s.append(" ");
+        s.append(this.getSpaces(level+2));
+        s.append(auxID.toString() + '\n');
+        //s.append(" ");
         
         for(ParamDeclaration param : paramDeclaration)
-            s.append(param.toString(level + 1));
+            s.append(param.toString(level + 3));
         
         for(Statement statement : statement)
-            s.append(statement.toString(level + 1));
+            s.append(statement.toString(level + 3));
 //        s.append(" receives: \n");	
-        
-        s.append("function End");
+        s.append(this.getSpaces(level));
+        s.append("Function End");
 //        s.append(expression.toString(level + 1));
 
         return s.toString();

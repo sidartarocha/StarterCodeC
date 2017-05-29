@@ -9,6 +9,9 @@ import scanner.LexicalException;
 import scanner.Token;
 
 import util.AST.AST;
+import util.AST.Arguments;
+import util.AST.CallFunc;
+import util.AST.Command;
 import util.AST.Declaration;
 import util.AST.Expression;
 import util.AST.FactorBoolean;
@@ -16,11 +19,12 @@ import util.AST.FactorExpression;
 import util.AST.FactorNumber;
 import util.AST.FunDeclaration;
 import util.AST.Identifier;
+import util.AST.IterationStmt;
 import util.AST.ParamDeclaration;
-import util.AST.ParmDeclaration;
 import util.AST.Program;
 import util.AST.SelectionStmt;
 import util.AST.SimpleExpression;
+import util.AST.StarVarStmt;
 import util.AST.Statement;
 import util.AST.TBoolean;
 import util.AST.TOpAr;
@@ -28,9 +32,9 @@ import util.AST.TOpBool;
 import util.AST.TOpMul;
 import util.AST.Term;
 import util.AST.Tinteger;
-import util.AST.TokenCommand;
 import util.AST.TypeAst;
 import util.AST.VarDeclaration;
+import util.AST.VarDeclarationStmt;
 import util.AST.factorID;
 
 /**
@@ -172,11 +176,10 @@ public class Parser {
 
 	//Declaracao de Variavel
 	private VarDeclaration parseVarDeclaration(TypeAst auxType, Identifier auxID) throws SyntacticException, LexicalException {
-		//TypeAst auxType = auxType;
-		//Identifier auxID = auxID;
-		
+				
 		ArrayList<Identifier> auxIDlist = new ArrayList<Identifier>();
 		auxIDlist.add(auxID);
+		
 		if(this.currentToken.getKind() == GrammarSymbols.COMMA){
 			while(this.currentToken.getKind() != GrammarSymbols.SEMICOLON ){
 				accept(GrammarSymbols.COMMA);
@@ -187,38 +190,8 @@ public class Parser {
 		}else{
 			accept(GrammarSymbols.SEMICOLON);
 		}
-		
-		
+			
 		return new VarDeclaration(auxType, auxIDlist); 
-		
-		
-		//		if(this.currentToken.getKind() == GrammarSymbols.INT){
-//			accept(GrammarSymbols.INT);
-//			while (this.currentToken.getKind()==GrammarSymbols.ID){
-//				accept(GrammarSymbols.ID);
-//				if(this.currentToken.getKind() == GrammarSymbols.COMMA){
-//					accept(GrammarSymbols.COMMA);
-//				}else{
-//					//if(this.currentToken.getKind() == GrammarSymbols.SEMICOLON){
-//						break;
-//						//accept(GrammarSymbols.COMMA);
-//				}
-//			}
-//		}else{
-//			accept(GrammarSymbols.BOOLEAN);
-//			while (this.currentToken.getKind()==GrammarSymbols.ID){
-//				accept(GrammarSymbols.ID);
-//				if(this.currentToken.getKind() == GrammarSymbols.COMMA){
-//					accept(GrammarSymbols.COMMA);
-//				}else{
-//					//if(this.currentToken.getKind() == GrammarSymbols.SEMICOLON){
-//						break;
-//						//accept(GrammarSymbols.COMMA);
-//				}
-//			}
-//		}
-//		return null;
-		
 	}
 	
 	//Declaracao de funcao
@@ -244,7 +217,7 @@ public class Parser {
 //			}
 		}
 		accept(GrammarSymbols.RB);
-		return new FunDeclaration(auxType, auxID, paramDeclaration, statement   );
+		return new FunDeclaration(auxType, auxID, paramDeclaration, statement);
 		
 	}
 
@@ -262,89 +235,180 @@ public class Parser {
 	}
 
 	private Statement parseStatement() throws SyntacticException, LexicalException {
-		ArrayList<Statement> statementlist = new ArrayList<Statement>();
+		Statement statementlist = null;
 		while (this.currentToken.getKind()!=GrammarSymbols.RB){
-			if(this.currentToken.getKind()==GrammarSymbols.IF){
-				statementlist.add(new SelectionStmt(parseSelectionStmt());
-			}else{
-				if (this.currentToken.getKind()==GrammarSymbols.WHILE){
-					return new Statement(parseIterationStmt());
-				}else{
-					if(this.currentToken.getKind()==GrammarSymbols.RETURN){
-						return new Statement(parseReturnStmt());
+			switch (this.currentToken.getKind()) {
+			case IF:
+				statementlist = parseSelectionStmt();
+				break;
+
+			case WHILE:
+				statementlist = parseIterationStmt();
+				break;
+				
+			case RETURN:
+				statementlist = parseReturnStmt();
+				break;
+			
+			case PRINTF:
+				statementlist = parsePrintfStmt();
+				break;
+			
+			case BREAK:
+				statementlist = new Command(this.currentToken, null );
+				accept(GrammarSymbols.BREAK);
+				break;
+				
+			case CONTINUE:	
+				statementlist = new Command(this.currentToken, null );
+				accept(GrammarSymbols.CONTINUE);
+				
+			case ID:
+					Identifier Id = new Identifier(this.currentToken);
+					accept(GrammarSymbols.ID);
+					//StarVarStmt startVar;
+					if(this.currentToken.getKind()==GrammarSymbols.EQUAL){
+						accept(GrammarSymbols.EQUAL);
+						Expression expression = parseExpression();
+						accept(GrammarSymbols.SEMICOLON);
+						statementlist = new StarVarStmt(Id, expression);
+						break;
 					}else{
-						if (this.currentToken.getKind()==GrammarSymbols.PRINTF) {
-							return new Statement(parsePrintfStmt());
-						}else{
-							if (this.currentToken.getKind()==GrammarSymbols.BREAK){
-								TokenCommand tokenCommand = new TokenCommand(this.currentToken.getKind());
-								accept(GrammarSymbols.BREAK);
-								return tokenCommand;
-								//break;
-							}else{
-								if(this.currentToken.getKind()==GrammarSymbols.CONTINUE){
-									TokenCommand tokenCommand = new TokenCommand(this.currentToken.getKind());
-									accept(GrammarSymbols.CONTINUE);
-									return tokenCommand;
-									//continue;
-								}else{
-									//Declaração de Variavel Local
-									if(this.currentToken.getKind()==GrammarSymbols.INT ||
-											this.currentToken.getKind()==GrammarSymbols.BOOLEAN){
-										//while(this.currentToken.getKind()!=GrammarSymbols.SEMICOLON){
-											TypeAst auxType = parseType();
-											Identifier auxID = new Identifier(this.currentToken); 
-											accept(GrammarSymbols.ID);
-											parseVarDeclaration(auxType, auxID);
-										//}
-										accept(GrammarSymbols.SEMICOLON);
-									}else{//inicialização de variavel
-										if(this.currentToken.getKind()==GrammarSymbols.ID){
-											accept(GrammarSymbols.ID);
-											if(this.currentToken.getKind()==GrammarSymbols.EQUAL){
-												accept(GrammarSymbols.EQUAL);
-												parseExpression();
-												accept(GrammarSymbols.SEMICOLON);
-											}													
-										}else{
-											if(this.currentToken.getKind()==GrammarSymbols.LP){
-												accept(GrammarSymbols.LP);
-												while(this.currentToken.getKind()!=GrammarSymbols.RP){
-													parseAgrms();
-												}
-											accept(GrammarSymbols.RP);
-											accept(GrammarSymbols.SEMICOLON);
-											}else{
-												return 1;
-											}
-										}
-									}
-								}
-							}
-						}
+						//Chamada de funcao
+						//Identifier Id = new Identifier(this.currentToken); 
+						accept(GrammarSymbols.ID);
+						Arguments arguments = null;
+						if(this.currentToken.getKind()==GrammarSymbols.LP){
+							accept(GrammarSymbols.LP);
+//							if(this.currentToken.getKind()!=GrammarSymbols.RP){
+//								//arguments = parseAgrms();
+//							}
+						accept(GrammarSymbols.RP);
+						accept(GrammarSymbols.SEMICOLON);
 					}
+						statementlist = new CallFunc(Id, arguments);
+					break;
 				}
-			}
-		}
-		return statement;
-	}	
+					break;
+					
+			default:					
+				while(this.currentToken.getKind()!=GrammarSymbols.SEMICOLON){
+					TypeAst auxType = parseType();
+					Identifier auxID = new Identifier(this.currentToken); 
+					accept(GrammarSymbols.ID);
+					statementlist = (parseVarDeclarationStmt(auxType, auxID);
+					}
+					accept(GrammarSymbols.SEMICOLON);
+					break;
+						
+		
+		return statementlist;
+	}
+			
+			
+//			if(this.currentToken.getKind()==GrammarSymbols.IF){
+//				statementlist = parseSelectionStmt();
+//			}else{
+//				if (this.currentToken.getKind()==GrammarSymbols.WHILE){
+//					statementlist = parseIterationStmt();
+//				}else{
+//					if(this.currentToken.getKind()==GrammarSymbols.RETURN){
+//						statementlist = parseReturnStmt();
+//					}else{
+//						if (this.currentToken.getKind()==GrammarSymbols.PRINTF) {
+//							statementlist = parsePrintfStmt();
+//						}else{
+//							if (this.currentToken.getKind()==GrammarSymbols.BREAK){
+//								statementlist = new Command(this.currentToken, null );
+//								accept(GrammarSymbols.BREAK);
+//								
+//							}else{
+//								if(this.currentToken.getKind()==GrammarSymbols.CONTINUE){
+//									statementlist = new Command(this.currentToken, null );
+//									accept(GrammarSymbols.CONTINUE);
+//								}else{
+//									//Declaracao de Variavel Local
+//									if(this.currentToken.getKind()==GrammarSymbols.INT ||
+//											this.currentToken.getKind()==GrammarSymbols.BOOLEAN){
+//										while(this.currentToken.getKind()!=GrammarSymbols.SEMICOLON){
+//											TypeAst auxType = parseType();
+//											Identifier auxID = new Identifier(this.currentToken); 
+//											accept(GrammarSymbols.ID);
+//											statementlist = (parseVarDeclarationStmt(auxType, auxID);
+//										}
+//										accept(GrammarSymbols.SEMICOLON);
+//									}else{//inicializacao de variavel
+//										if(this.currentToken.getKind()==GrammarSymbols.ID){
+//											StarVarStmt startVar;
+//											Identifier Id = new Identifier(this.currentToken);
+//											accept(GrammarSymbols.ID);
+//											if(this.currentToken.getKind()==GrammarSymbols.EQUAL){
+//												accept(GrammarSymbols.EQUAL);
+//												parseExpression();
+//												accept(GrammarSymbols.SEMICOLON);
+//											}													
+//										}else{
+//											//Chamada de funcao
+//											CallFunc callFunc;
+//											Identifier Id = new Identifier(this.currentToken); 
+//											accept(GrammarSymbols.ID);
+//											if(this.currentToken.getKind()==GrammarSymbols.LP){
+//												accept(GrammarSymbols.LP);
+//												while(this.currentToken.getKind()!=GrammarSymbols.RP){
+//													parseAgrms();
+//												}
+//											accept(GrammarSymbols.RP);
+//											accept(GrammarSymbols.SEMICOLON);
+//											}
+//										}
+//									}
+//								}
+//							}
+//						}
+//					}
+//				}
+//			}
+//		}
+		//return statementlist;
+//	}	
 									
 			
 //		caso ele entre nesse return quer dizer que ele achou um token que não esta 
 //		nesse laço e não era esperado
 //		
 			
-
-	private void parseAgrms() throws SyntacticException, LexicalException {
-		parseExpression();
-		while(this.currentToken.getKind()==GrammarSymbols.COMMA){
-			accept(GrammarSymbols.COMMA);
-			parseExpression();
+	
+	//Declaracao de Variavel local
+	private VarDeclarationStmt parseVarDeclarationStmt(TypeAst auxType, Identifier auxID) throws SyntacticException, LexicalException  {
+					
+			ArrayList<Identifier> auxIDlist = new ArrayList<Identifier>();
+			auxIDlist.add(auxID);
+			
+			if(this.currentToken.getKind() == GrammarSymbols.COMMA){
+				while(this.currentToken.getKind() != GrammarSymbols.SEMICOLON ){
+					accept(GrammarSymbols.COMMA);
+					auxIDlist.add(new Identifier(this.currentToken));
+					accept(GrammarSymbols.ID);
+				}
+				accept(GrammarSymbols.SEMICOLON);
+			}else{
+				accept(GrammarSymbols.SEMICOLON);
+			}
+				
+			return new VarDeclarationStmt(auxType, auxIDlist); 
 		}
 		
+	private Arguments parseAgrms() throws SyntacticException, LexicalException {
+		ArrayList<Expression> expressionList = new ArrayList<Expression>();
+		expressionList.add(parseExpression());
+		while(this.currentToken.getKind()==GrammarSymbols.COMMA){
+			accept(GrammarSymbols.COMMA);
+			expressionList.add(parseExpression());
+		}
+		return new Arguments(expressionList);
 	}
 
-	private void parsePrintfStmt() throws SyntacticException, LexicalException {
+	private Command parsePrintfStmt() throws SyntacticException, LexicalException {
 		accept(GrammarSymbols.PRINTF);
 		accept(GrammarSymbols.LP);
 		if(this.currentToken.getKind()!=GrammarSymbols.RP){
@@ -352,33 +416,38 @@ public class Parser {
 		}
 		accept(GrammarSymbols.RP);
 		accept(GrammarSymbols.SEMICOLON);
+		return null;
 		
 	}
 
-	private void parseReturnStmt() throws SyntacticException, LexicalException {
+	private Command parseReturnStmt() throws SyntacticException, LexicalException {
+		Token token = this.currentToken;
+		Expression expression = null;
 		accept(GrammarSymbols.RETURN);
 		if(this.currentToken.getKind()==GrammarSymbols.SEMICOLON){
 			accept(GrammarSymbols.SEMICOLON);
 		}else{
-			parseExpression();
+			expression = parseExpression();
 			accept(GrammarSymbols.SEMICOLON);
 		}
-		
+		return new Command(token, expression);
 	}
 
-	private void parseIterationStmt() throws SyntacticException, LexicalException {
+	private IterationStmt parseIterationStmt() throws SyntacticException, LexicalException {
+		ArrayList<Statement> statement = new ArrayList<Statement>(); 
 		accept(GrammarSymbols.WHILE);
 		accept(GrammarSymbols.LP);
-			parseExpression();
+		Expression expression = parseExpression();
 		accept(GrammarSymbols.RP);
 		accept(GrammarSymbols.LB);
 		while (this.currentToken.getKind()!=GrammarSymbols.RB) {
-			int validacaoStatmant = parseStatement(); 
-			if(validacaoStatmant==1){ //esse if tem a função de impedir que o 
-				break;
-			}
+			statement.add(parseStatement()); 
+//			if(validacaoStatmant==1){ //esse if tem a função de impedir que o 
+//				break;
+//			}
 		}
 		accept(GrammarSymbols.RB);
+		return new IterationStmt(expression, statement);
 		
 	}
 

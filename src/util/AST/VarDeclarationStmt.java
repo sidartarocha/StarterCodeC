@@ -2,12 +2,12 @@ package util.AST;
 
 import java.util.ArrayList;
 
-public class VarDeclaration extends AST{
+public class VarDeclarationStmt extends Statement{
 	
 	private TypeAst auxType;
 	private ArrayList<Identifier> auxIDlist;
 
-	public VarDeclaration(TypeAst auxType, ArrayList<Identifier> auxIDlist) {
+	public VarDeclarationStmt(TypeAst auxType, ArrayList<Identifier> auxIDlist) {
 		this.auxType = auxType;
 		this.auxIDlist = auxIDlist;
 	}
