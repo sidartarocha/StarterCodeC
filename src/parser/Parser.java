@@ -236,7 +236,7 @@ public class Parser {
 
 	private Statement parseStatement() throws SyntacticException, LexicalException {
 		Statement statementlist = null;
-		while (this.currentToken.getKind()!=GrammarSymbols.RB){
+		if (this.currentToken.getKind()!=GrammarSymbols.RB){
 			switch (this.currentToken.getKind()) {
 			case IF:
 				statementlist = parseSelectionStmt();
@@ -264,114 +264,47 @@ public class Parser {
 				accept(GrammarSymbols.CONTINUE);
 				
 			case ID:
-					Identifier Id = new Identifier(this.currentToken);
+				Identifier Id = new Identifier(this.currentToken);
+				accept(GrammarSymbols.ID);
+				//StarVarStmt startVar;
+				if(this.currentToken.getKind()==GrammarSymbols.EQUAL){
+					accept(GrammarSymbols.EQUAL);
+					Expression expression = parseExpression();
+					accept(GrammarSymbols.SEMICOLON);
+					statementlist = new StarVarStmt(Id, expression);
+					break;
+				}else{
+					//Chamada de funcao
+					//Identifier Id = new Identifier(this.currentToken); 
 					accept(GrammarSymbols.ID);
-					//StarVarStmt startVar;
-					if(this.currentToken.getKind()==GrammarSymbols.EQUAL){
-						accept(GrammarSymbols.EQUAL);
-						Expression expression = parseExpression();
-						accept(GrammarSymbols.SEMICOLON);
-						statementlist = new StarVarStmt(Id, expression);
-						break;
-					}else{
-						//Chamada de funcao
-						//Identifier Id = new Identifier(this.currentToken); 
-						accept(GrammarSymbols.ID);
-						Arguments arguments = null;
-						if(this.currentToken.getKind()==GrammarSymbols.LP){
-							accept(GrammarSymbols.LP);
-//							if(this.currentToken.getKind()!=GrammarSymbols.RP){
-//								//arguments = parseAgrms();
-//							}
+					Arguments arguments = null;
+					if(this.currentToken.getKind()==GrammarSymbols.LP){
+						accept(GrammarSymbols.LP);
+						if(this.currentToken.getKind()!=GrammarSymbols.RP){
+							arguments = parseAgrms();
+						}
 						accept(GrammarSymbols.RP);
 						accept(GrammarSymbols.SEMICOLON);
 					}
-						statementlist = new CallFunc(Id, arguments);
+					statementlist = new CallFunc(Id, arguments);
 					break;
 				}
-					break;
+				
 					
 			default:					
 				while(this.currentToken.getKind()!=GrammarSymbols.SEMICOLON){
 					TypeAst auxType = parseType();
 					Identifier auxID = new Identifier(this.currentToken); 
 					accept(GrammarSymbols.ID);
-					statementlist = (parseVarDeclarationStmt(auxType, auxID);
+					statementlist = parseVarDeclarationStmt(auxType, auxID);
 					}
 					accept(GrammarSymbols.SEMICOLON);
 					break;
-						
-		
-		return statementlist;
+		}
 	}
-			
-			
-//			if(this.currentToken.getKind()==GrammarSymbols.IF){
-//				statementlist = parseSelectionStmt();
-//			}else{
-//				if (this.currentToken.getKind()==GrammarSymbols.WHILE){
-//					statementlist = parseIterationStmt();
-//				}else{
-//					if(this.currentToken.getKind()==GrammarSymbols.RETURN){
-//						statementlist = parseReturnStmt();
-//					}else{
-//						if (this.currentToken.getKind()==GrammarSymbols.PRINTF) {
-//							statementlist = parsePrintfStmt();
-//						}else{
-//							if (this.currentToken.getKind()==GrammarSymbols.BREAK){
-//								statementlist = new Command(this.currentToken, null );
-//								accept(GrammarSymbols.BREAK);
-//								
-//							}else{
-//								if(this.currentToken.getKind()==GrammarSymbols.CONTINUE){
-//									statementlist = new Command(this.currentToken, null );
-//									accept(GrammarSymbols.CONTINUE);
-//								}else{
-//									//Declaracao de Variavel Local
-//									if(this.currentToken.getKind()==GrammarSymbols.INT ||
-//											this.currentToken.getKind()==GrammarSymbols.BOOLEAN){
-//										while(this.currentToken.getKind()!=GrammarSymbols.SEMICOLON){
-//											TypeAst auxType = parseType();
-//											Identifier auxID = new Identifier(this.currentToken); 
-//											accept(GrammarSymbols.ID);
-//											statementlist = (parseVarDeclarationStmt(auxType, auxID);
-//										}
-//										accept(GrammarSymbols.SEMICOLON);
-//									}else{//inicializacao de variavel
-//										if(this.currentToken.getKind()==GrammarSymbols.ID){
-//											StarVarStmt startVar;
-//											Identifier Id = new Identifier(this.currentToken);
-//											accept(GrammarSymbols.ID);
-//											if(this.currentToken.getKind()==GrammarSymbols.EQUAL){
-//												accept(GrammarSymbols.EQUAL);
-//												parseExpression();
-//												accept(GrammarSymbols.SEMICOLON);
-//											}													
-//										}else{
-//											//Chamada de funcao
-//											CallFunc callFunc;
-//											Identifier Id = new Identifier(this.currentToken); 
-//											accept(GrammarSymbols.ID);
-//											if(this.currentToken.getKind()==GrammarSymbols.LP){
-//												accept(GrammarSymbols.LP);
-//												while(this.currentToken.getKind()!=GrammarSymbols.RP){
-//													parseAgrms();
-//												}
-//											accept(GrammarSymbols.RP);
-//											accept(GrammarSymbols.SEMICOLON);
-//											}
-//										}
-//									}
-//								}
-//							}
-//						}
-//					}
-//				}
-//			}
-//		}
-		//return statementlist;
-//	}	
-									
+			return statementlist;
+	}		
+										
 			
 //		caso ele entre nesse return quer dizer que ele achou um token que não esta 
 //		nesse laço e não era esperado
@@ -390,9 +323,9 @@ public class Parser {
 					auxIDlist.add(new Identifier(this.currentToken));
 					accept(GrammarSymbols.ID);
 				}
-				accept(GrammarSymbols.SEMICOLON);
+				//accept(GrammarSymbols.SEMICOLON);
 			}else{
-				accept(GrammarSymbols.SEMICOLON);
+				//accept(GrammarSymbols.SEMICOLON);
 			}
 				
 			return new VarDeclarationStmt(auxType, auxIDlist); 
@@ -409,14 +342,16 @@ public class Parser {
 	}
 
 	private Command parsePrintfStmt() throws SyntacticException, LexicalException {
+		Token token = this.currentToken;
+		Expression expression = null;
 		accept(GrammarSymbols.PRINTF);
 		accept(GrammarSymbols.LP);
 		if(this.currentToken.getKind()!=GrammarSymbols.RP){
-			parseExpression();
+			expression = parseExpression();
 		}
 		accept(GrammarSymbols.RP);
 		accept(GrammarSymbols.SEMICOLON);
-		return null;
+		return new Command(token, expression);
 		
 	}
 
