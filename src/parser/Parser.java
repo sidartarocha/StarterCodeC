@@ -396,11 +396,7 @@ public class Parser {
 		accept(GrammarSymbols.LB);
 		while (this.currentToken.getKind()!=GrammarSymbols.RB) {
 			statemant.add(parseStatement());
-			//			int validacaoStatmant = parseStatement(); 
-//			if(validacaoStatmant==1){ 
-//				//esse if tem a função de impedir que o 
-//				break;
-//			}
+
 		}
 		accept(GrammarSymbols.RB);
 		if(this.currentToken.getKind()==GrammarSymbols.ELSE){
@@ -409,10 +405,6 @@ public class Parser {
 				accept(GrammarSymbols.LB);
 				while (this.currentToken.getKind()!=GrammarSymbols.RB) {
 					statemant.add(parseStatement());
-//					int validacaoStatmant = parseStatement(); 
-//					if(validacaoStatmant==1){ //esse if tem a função de impedir que o 
-//						break;
-//					}
 				}accept(GrammarSymbols.RB);
 			}else if(this.currentToken.getKind()==GrammarSymbols.IF){
 				parseSelectionStmt();
