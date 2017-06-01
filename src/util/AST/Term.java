@@ -14,8 +14,26 @@ public class Term extends AST{
 
 	@Override
 	public String toString(int level) {
-		// TODO Auto-generated method stub
-		return null;
+		  StringBuilder s = new StringBuilder();
+	        s.append(this.getSpaces(level));
+	        s.append("Term Start\n");
+
+	        //s.append(this.getSpaces(level));
+	        s.append(headFactor.toString(level+1));
+	        
+	        if(opMul != null) {
+	            s.append(this.getSpaces(level+1));
+	            s.append("Operator: ");
+	            s.append(opMul.toString() + "\n");
+	        }
+	        
+	        if(bodyFactor != null) {
+	            s.append(bodyFactor.toString(level+1));
+	        }
+
+	        s.append(this.getSpaces(level));
+	        s.append("Term End\n");
+	        return s.toString();
 	}
 
 }

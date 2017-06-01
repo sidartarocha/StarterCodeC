@@ -19,19 +19,30 @@ public class FunDeclaration extends AST {
 	@Override
     public String toString(int level) {
         StringBuilder s = new StringBuilder();
+        s.append(this.getSpaces(level));
         s.append("Function Start \n");
-        s.append(this.getSpaces(level+1));
-        s.append(auxType.toString() + '\n');
+        //s.append(this.getSpaces(level+1));
+        //s.append(auxType.toString() + '\n');
         //s.append(" ");
-        s.append(this.getSpaces(level+2));
-        s.append(auxID.toString() + '\n');
+        s.append(this.getSpaces(level +1));
+        s.append("Type Function " + auxType.toString() + '\n');
+        s.append(this.getSpaces(level +1));
+        s.append("Name Function \n");
+        s.append(auxID.toString(level +1) + '\n');
         //s.append(" ");
         
-        for(ParamDeclaration param : paramDeclaration)
-            s.append(param.toString(level + 3));
-        
-        for(Statement statement : statement)
-            s.append(statement.toString(level + 3));
+        for(ParamDeclaration param : paramDeclaration){
+        	s.append(param.toString(level + 1));
+        }
+        s.append(this.getSpaces(level +1));   
+        s.append("Statement Start \n");
+        for(Statement statement : statement){
+        	if(statement!=null){
+        		s.append(statement.toString(level + 2));
+        	}
+        }
+        s.append(this.getSpaces(level +1));  
+        s.append("Statement End \n");    
 //        s.append(" receives: \n");	
         s.append(this.getSpaces(level));
         s.append("Function End");

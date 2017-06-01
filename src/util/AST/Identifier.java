@@ -8,8 +8,15 @@ public class Identifier extends Terminal{
 		super(astToken);
 	}
 
-	 @Override
-    public String toString() {
-        return this.getToken().getSpelling();
+	@Override
+	public String toString(int level) {
+			StringBuilder s = new StringBuilder();
+	        s.append(this.getSpaces(level));
+	        s.append("ID: " + this.getToken().getSpelling());
+	        
+    
+        return s.toString();
     }
+
+	
 }

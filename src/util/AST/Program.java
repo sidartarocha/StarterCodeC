@@ -20,7 +20,7 @@ public class Program extends AST{
     public String toString(int level) {
         StringBuilder s = new StringBuilder();
         s.append("Program Start\n");
-        s.append("	");
+        //s.append(level + 1);
         for(Declaration decl : declarations){
         	//s.append("	");
         	s.append(decl.toString(level + 1));

@@ -14,8 +14,25 @@ public class SelectionStmt extends Statement{
 
 	@Override
 	public String toString(int level) {
-		// TODO Auto-generated method stub
-		return null;
+		StringBuilder s = new StringBuilder();
+        s.append(this.getSpaces(level));
+        s.append("SelectionStmt Start (IF) \n");
+
+        s.append(this.getSpaces(level+1));
+        s.append("Condition Expression \n");
+        s.append(expression.toString(level+2));
+        s.append(this.getSpaces(level+1));
+        s.append("Condition Expression End \n");
+        
+        for(Statement statement : statement){
+        	s.append(statement.toString(level+1));
+        }
+        
+        
+        s.append(this.getSpaces(level));
+        s.append("SelectionStmt End (IF) \n");
+        
+        return s.toString();
 	}
 
 }

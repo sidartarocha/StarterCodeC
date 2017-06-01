@@ -15,6 +15,7 @@ import util.AST.Command;
 import util.AST.Declaration;
 import util.AST.Expression;
 import util.AST.FactorBoolean;
+import util.AST.FactorCallFunc;
 import util.AST.FactorExpression;
 import util.AST.FactorNumber;
 import util.AST.FunDeclaration;
@@ -255,13 +256,16 @@ public class Parser {
 				break;
 			
 			case BREAK:
-				statementlist = new Command(this.currentToken, null );
+				statementlist = new Command(this.currentToken, null);
 				accept(GrammarSymbols.BREAK);
+				accept(GrammarSymbols.SEMICOLON);
 				break;
 				
 			case CONTINUE:	
 				statementlist = new Command(this.currentToken, null );
 				accept(GrammarSymbols.CONTINUE);
+				accept(GrammarSymbols.SEMICOLON);
+				break;
 				
 			case ID:
 				Identifier Id = new Identifier(this.currentToken);
@@ -276,7 +280,7 @@ public class Parser {
 				}else{
 					//Chamada de funcao
 					//Identifier Id = new Identifier(this.currentToken); 
-					accept(GrammarSymbols.ID);
+					//accept(GrammarSymbols.ID);
 					Arguments arguments = null;
 					if(this.currentToken.getKind()==GrammarSymbols.LP){
 						accept(GrammarSymbols.LP);
@@ -377,9 +381,6 @@ public class Parser {
 		accept(GrammarSymbols.LB);
 		while (this.currentToken.getKind()!=GrammarSymbols.RB) {
 			statement.add(parseStatement()); 
-//			if(validacaoStatmant==1){ //esse if tem a função de impedir que o 
-//				break;
-//			}
 		}
 		accept(GrammarSymbols.RB);
 		return new IterationStmt(expression, statement);
@@ -433,7 +434,7 @@ public class Parser {
 	private SimpleExpression parseSimpleExpression() throws SyntacticException, LexicalException {
 		Term headTerm = parseTerm();
 		TOpAr tOpAr = null;
-		Term bodyTerm = parseTerm();
+		Term bodyTerm = null;
 		while(this.currentToken.getKind()==GrammarSymbols.OP_AR){
 			tOpAr = new TOpAr(currentToken);
 			accept(GrammarSymbols.OP_AR);
@@ -445,7 +446,7 @@ public class Parser {
 	private Term parseTerm() throws SyntacticException, LexicalException {
 		FactorExpression headFactor = parseFactor();
 		TOpMul tOpMul = null;
-		FactorExpression bodyFactor = parseFactor();
+		FactorExpression bodyFactor = null;
 		while(this.currentToken.getKind()==GrammarSymbols.OP_MUL){
 			tOpMul = new TOpMul(currentToken);
 			accept(GrammarSymbols.OP_MUL);
@@ -465,18 +466,20 @@ public class Parser {
 				accept(GrammarSymbols.FALSE);
 			}else{
 				if(this.currentToken.getKind()==GrammarSymbols.ID){
-					factorExpresion = new factorID(new Identifier(this.currentToken));
+					Identifier identifier;
+					identifier = new Identifier(currentToken);
 					accept(GrammarSymbols.ID);
-//					if(this.currentToken.getKind()==GrammarSymbols.LP){
-//						accept(GrammarSymbols.LP);
-//						while(this.currentToken.getKind()!=GrammarSymbols.RP){
-//							parseAgrms();
-//						}accept(GrammarSymbols.RP);
-//					}
-//				}else{
-//					if(this.currentToken.getKind()==GrammarSymbols.COMMA){
-//						accept(GrammarSymbols.COMMA);
-//						parseAgrms();
+					if(this.currentToken.getKind()!=GrammarSymbols.LP){
+						factorExpresion = new factorID(identifier);	
+					}else{
+						accept(GrammarSymbols.LP);
+						Arguments arguments = null;
+							if(this.currentToken.getKind()!=GrammarSymbols.RP){
+								arguments = parseAgrms();
+							}
+							accept(GrammarSymbols.RP);
+							factorExpresion = new FactorCallFunc(identifier, arguments);
+						}
 					}else{
 						//if(this.currentToken.getKind()==GrammarSymbols.NUMBER){
 						factorExpresion = new FactorNumber(new Tinteger(this.currentToken));	

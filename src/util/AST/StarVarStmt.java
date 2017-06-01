@@ -11,24 +11,20 @@ public class StarVarStmt extends Statement{
 		this.expression = expression;
 	}
 
-	
-
-	public Identifier getIdentifier() {
-		return identifier;
-	}
-
-
-
-	public Expression getExpression() {
-		return expression;
-	}
-
-
 
 	@Override
 	public String toString(int level) {
-		// TODO Auto-generated method stub
-		return null;
+		StringBuilder s = new StringBuilder();
+        s.append(this.getSpaces(level));
+        s.append("Variable Initialize \n");
+        s.append(identifier.toString(level+1) + " --- ");
+        s.append("to receive");
+        s.append(expression.toString(level+1));
+       
+        
+        
+		return s.toString();
 	}
-
+	
 }
+

@@ -24,9 +24,9 @@ public class ParamDeclaration extends AST{
         //s.append(this.getSpaces(level) + '\n');
         s.append(this.getSpaces(level+1));
       
-        s.append(auxType.toString(level +1) + '\n');
-    	s.append(this.getSpaces(level + 2));
-        s.append(auxID.toString(level + 2) + '\n');
+        s.append("Type Parameter: " + auxType.toString(level) + '\n');
+    	s.append(this.getSpaces(level));
+        s.append(auxID.toString(level) + '\n');
     
 
         s.append(this.getSpaces(level));

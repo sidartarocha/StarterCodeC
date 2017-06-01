@@ -17,13 +17,13 @@ public class FactorNumber extends FactorExpression {
 	    public String toString(int level) {
 	        StringBuilder s = new StringBuilder();
 	        s.append(this.getSpaces(level));
-	        s.append("FactorNumber Start\n");
+	        s.append("Number Start\n");
 
 	        s.append(this.getSpaces(level + 1));
 	        s.append(number.toString() + '\n');
 
 	        s.append(this.getSpaces(level));
-	        s.append("FactorNumber End\n");
+	        s.append("Number End\n");
 	        return s.toString();
 	    }
 

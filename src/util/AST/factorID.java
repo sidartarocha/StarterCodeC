@@ -18,8 +18,15 @@ public class factorID extends FactorExpression {
 	
 	@Override
 	public String toString(int level) {
-		// TODO Auto-generated method stub
-		return null;
+		  StringBuilder s = new StringBuilder();
+	        s.append(this.getSpaces(level));
+	        s.append("Factor ID : \n");
+
+	        //s.append(this.getSpaces(level));
+	        s.append(tIdentifier.toString(level + 1) + "\n");
+	        
+	        
+	        return s.toString();
 	}
 	
 	

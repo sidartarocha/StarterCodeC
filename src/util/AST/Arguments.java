@@ -12,8 +12,16 @@ public class Arguments extends Statement{
 
 	@Override
 	public String toString(int level) {
-		// TODO Auto-generated method stub
-		return null;
+		StringBuilder s = new StringBuilder();
+        s.append(this.getSpaces(level));
+		s.append("Arguments:  \n");
+        for(Expression expressionList :expressionList){
+        	s.append(expressionList.toString(level+1));	
+        }
+        s.append(this.getSpaces(level));
+        s.append("Arguments END  \n");
+        
+        return s.toString();
 	}
 
 }

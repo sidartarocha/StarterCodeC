@@ -24,18 +24,21 @@ public class Expression extends AST {
 	public String toString(int level) {
 		  StringBuilder s = new StringBuilder();
 	        s.append(this.getSpaces(level));
+	        
 	        s.append("Expression Start\n");
-
+	        s.append(head.toString(level + 1));
+	        
 	        if(opBool != null) {
 	            s.append(this.getSpaces(level + 1));
-	            s.append("Operator: ");
+	            s.append("Operator ");
 	            s.append(opBool.toString() + '\n');
+	            
 	        }
 
-	        s.append(head.toString(level + 1));
+	        //s.append(head.toString(level + 1));
 
 	        if(body != null) {
-	            s.append(body.toString(level + 1));
+	        	s.append(body.toString(level + 1));
 	        }
 
 	        s.append(this.getSpaces(level));

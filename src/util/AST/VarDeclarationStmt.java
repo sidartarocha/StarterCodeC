@@ -15,11 +15,11 @@ public class VarDeclarationStmt extends Statement{
 	@Override
     public String toString(int level) {
         StringBuilder s = new StringBuilder();
-        s.append("Var Declaration Start");
-        s.append(this.getSpaces(level) + '\n');
+        s.append(this.getSpaces(level));
+        s.append("Var Declaration Statement Start \n");
         s.append(this.getSpaces(level+1));
         //s.append("		");
-        s.append(auxType.toString(level +1) + '\n');
+        s.append("Type: " + auxType.toString(level +1) + '\n');
         //s.append("	");
         
         for(Identifier iD : auxIDlist){
@@ -33,7 +33,7 @@ public class VarDeclarationStmt extends Statement{
 //        s.append(expression.toString(level + 1));
         s.append(this.getSpaces(level));
         //s.append("	");
-        s.append("Var Declaration End");
+        s.append("Var Declaration Statement End \n");
         return s.toString();
     }
 	

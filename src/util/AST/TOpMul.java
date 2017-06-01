@@ -10,9 +10,11 @@ public class TOpMul extends Terminal {
 		// TODO Auto-generated constructor stub
 	}
 
-	@Override
 	public String toString() {
-		return this.getToken().getKind().name();
+		StringBuilder s = new StringBuilder();
+        //s.append(this.getSpaces());
+        s.append(this.getToken().getKind() +": ( "+ this.getToken().getSpelling()+" )");
+		return s.toString();
 	}
 
 }

@@ -1,4 +1,4 @@
-void main() {
+int main() {
       int idade; 
       idade = 20;
       printf(2+j);
@@ -9,21 +9,3 @@ void main() {
       }else{
             printf(e+f);}
 }
-
-
-int idade, b2, d4;
-boolean la;
-
-int main (int a){
-	int aqui, t2;
-	if(a+2 > b){
-		int r4;
-	}else{
-		b=4;
-	}
-	
-	while(a2 >= b){
-		b = r4;
-	}
-	printf(as+sdaf);
-} 

@@ -24,14 +24,15 @@ public class SimpleExpression extends AST{
 	        s.append(this.getSpaces(level));
 	        s.append("SimpleExpression Start\n");
 
+	        //s.append(this.getSpaces(level));
+	        s.append(headTerm.toString(level + 1));
+	        
 	        if(opAr != null) {
 	            s.append(this.getSpaces(level + 1));
 	            s.append("Operator: ");
-	            s.append(opAr.toString() + '\n');
+	            s.append(opAr.toString() + "\n");
 	        }
-
-	        s.append(headTerm.toString(level + 1));
-
+	        
 	        if(bodyTerm != null) {
 	            s.append(bodyTerm.toString(level + 1));
 	        }

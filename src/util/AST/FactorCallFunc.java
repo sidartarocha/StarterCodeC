@@ -1,6 +1,6 @@
 package util.AST;
 
-public class CallFunc extends Statement{
+public class FactorCallFunc extends FactorExpression{
 
 	private final Identifier identifier;
 	private Arguments arguments;
@@ -13,7 +13,7 @@ public class CallFunc extends Statement{
 		return arguments;
 	}
 
-	public CallFunc(Identifier identifier, Arguments arguments) {
+	public FactorCallFunc(Identifier identifier, Arguments arguments) {
 		super();
 		this.identifier = identifier;
 		this.arguments = arguments;
@@ -22,7 +22,7 @@ public class CallFunc extends Statement{
 	public String toString(int level) {
 		StringBuilder s = new StringBuilder();
         s.append(this.getSpaces(level));
-        s.append("Call Func Start \n");
+        s.append("Factor Call Func Start \n");
         s.append(identifier.toString(level+1) + "\n");
         //s.append(this.getSpaces(level));
         
@@ -30,7 +30,7 @@ public class CallFunc extends Statement{
         s.append(arguments.toString(level+1));
         
         s.append(this.getSpaces(level));
-        s.append("Call Func End \n");
+        s.append("Factor Call Func End \n");
         
         return s.toString();
 	}
