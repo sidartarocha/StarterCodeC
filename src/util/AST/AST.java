@@ -2,6 +2,7 @@ package util.AST;
 
 import checker.SemanticException;
 //import checker.Visitor;
+import checker.Visitor;
 
 /**
  * AST class
@@ -11,6 +12,8 @@ import checker.SemanticException;
  * @email gustavohpcarvalho@ecomp.poli.br
  */
 public abstract class AST {
+	
+	public abstract Object visit(Visitor v, Object arg);
 
 	public String getSpaces(int level) {
 		StringBuffer str = new StringBuffer();
@@ -22,12 +25,6 @@ public abstract class AST {
 	}
 	
 	public abstract String toString(int level);
-	
-//	public String toString(int level){
-//		return getSpaces(level); 
-//	}
-		
-	//public abstract Object visit (Visitor v, Object args) throws SemanticException;
 	
 }
 

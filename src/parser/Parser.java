@@ -36,7 +36,7 @@ import util.AST.Tinteger;
 import util.AST.TypeAst;
 import util.AST.VarDeclaration;
 import util.AST.VarDeclarationStmt;
-import util.AST.factorID;
+import util.AST.FactorID;
 
 /**
  * Parser class
@@ -470,7 +470,7 @@ public class Parser {
 					identifier = new Identifier(currentToken);
 					accept(GrammarSymbols.ID);
 					if(this.currentToken.getKind()!=GrammarSymbols.LP){
-						factorExpresion = new factorID(identifier);	
+						factorExpresion = new FactorID(identifier);	
 					}else{
 						accept(GrammarSymbols.LP);
 						Arguments arguments = null;
