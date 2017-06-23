@@ -2,6 +2,9 @@ package util.AST;
 
 import java.util.ArrayList;
 
+import checker.SemanticException;
+import checker.Visitor;
+
 public class Arguments extends Statement{
 
 	private ArrayList<Expression> expressionList;
@@ -24,4 +27,8 @@ public class Arguments extends Statement{
         return s.toString();
 	}
 
+	@Override
+	public Object visit(Visitor v, Object arg) throws SemanticException{
+		return v.visitArguments(this, arg);
+	}
 }

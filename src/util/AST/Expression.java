@@ -1,5 +1,8 @@
 package util.AST;
 
+import checker.SemanticException;
+import checker.Visitor;
+
 public class Expression extends AST {
 	private final SimpleExpression head;
 	private final TBoolean opBool;
@@ -17,7 +20,11 @@ public class Expression extends AST {
 	}
 
 
-
+	@Override
+	public Object visit(Visitor v, Object arg) throws SemanticException{
+		return v.visitExpression(this, arg);
+	}
+	
 
 
 	@Override

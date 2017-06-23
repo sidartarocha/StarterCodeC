@@ -2,6 +2,9 @@ package util.AST;
 
 import java.util.ArrayList;
 
+import checker.SemanticException;
+import checker.Visitor;
+
 public class Declaration extends AST{
 	private ArrayList<VarDeclaration> varD;
 	private ArrayList<FunDeclaration> funcD;
@@ -20,6 +23,10 @@ public class Declaration extends AST{
 		return funcD;
 	}
 	
+	@Override
+	public Object visit(Visitor v, Object arg) throws SemanticException{
+		return v.visitDeclaration(this, arg);
+	}
 	
 	
 

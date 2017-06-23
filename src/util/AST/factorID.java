@@ -1,11 +1,11 @@
 package util.AST;
 
-public class factorID extends FactorExpression {
+public class FactorID extends FactorExpression {
 	private Identifier tIdentifier;
 	
 	
 	
-	public factorID(Identifier tIdentifier) {
+	public FactorID(Identifier tIdentifier) {
 		super();
 		this.tIdentifier = tIdentifier;
 	}

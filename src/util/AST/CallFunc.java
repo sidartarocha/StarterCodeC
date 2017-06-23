@@ -1,5 +1,8 @@
 package util.AST;
 
+import checker.SemanticException;
+import checker.Visitor;
+
 public class CallFunc extends Statement{
 
 	private final Identifier identifier;
@@ -34,5 +37,11 @@ public class CallFunc extends Statement{
         
         return s.toString();
 	}
+	
+	@Override
+	public Object visit(Visitor v, Object arg) throws SemanticException{
+		return v.visitCallFunc(this, arg);
+	}
+	
 
 }

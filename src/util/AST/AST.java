@@ -13,7 +13,7 @@ import checker.Visitor;
  */
 public abstract class AST {
 	
-	public abstract Object visit(Visitor v, Object arg);
+	public abstract Object visit(Visitor v, Object arg) throws SemanticException;
 
 	public String getSpaces(int level) {
 		StringBuffer str = new StringBuffer();
@@ -25,6 +25,7 @@ public abstract class AST {
 	}
 	
 	public abstract String toString(int level);
+	
 	
 }
 
