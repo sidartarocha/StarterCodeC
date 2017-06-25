@@ -2,6 +2,9 @@ package util.AST;
 
 import java.util.ArrayList;
 
+import checker.SemanticException;
+import checker.Visitor;
+
 public class Program extends AST{
 	private ArrayList<Declaration> declarations;
 
@@ -32,6 +35,11 @@ public class Program extends AST{
         s.append("Program End\n");
         return s.toString();
     }
+
+	
+	public Object visit(Visitor v, Object arg) throws SemanticException {
+		return v.visitProgram(this, arg);
+	}
 
 	
 	

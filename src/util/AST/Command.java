@@ -32,7 +32,7 @@ public class Command extends Statement {
         return s.toString();
     }
 	
-	@Override
+
 	public Object visit(Visitor v, Object arg) throws SemanticException{
 		return v.visitCommand(this, arg);
 	}

@@ -16,9 +16,7 @@ public abstract class Terminal extends AST {
 		return token;
 	}
 
-    
-
-    @Override
+	@Override
     public String toString(int level) {
         return this.toString();
     }

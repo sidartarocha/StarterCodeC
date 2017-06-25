@@ -23,7 +23,7 @@ public class Declaration extends AST{
 		return funcD;
 	}
 	
-	@Override
+
 	public Object visit(Visitor v, Object arg) throws SemanticException{
 		return v.visitDeclaration(this, arg);
 	}

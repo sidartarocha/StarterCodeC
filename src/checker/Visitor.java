@@ -29,7 +29,8 @@ public interface Visitor {
 	public Object visitFactorId(FactorID factorID, Object arg) throws SemanticException;
 	
 	public Object visitFactorNumber(FactorNumber factorNumber, Object arg) throws SemanticException;
-		
+	
+	public Object visitFactorCallFunc(Visitor v, Object arg)throws SemanticException;
 	
 	//Statement
 	public Object visitIterationStmt(IterationStmt iterationStmt, Object arg) throws SemanticException;
@@ -47,26 +48,28 @@ public interface Visitor {
 	public Object visitTerm(Term term, Object arg) throws SemanticException;
 	
 	public Object visitTerminal(Terminal terminal, Object arg) throws SemanticException;
-		
+	//Types terminal Stmt ?
+	public Object visitVarDeclarationStmt(VarDeclarationStmt varDeclarationStmt, Object arg) ;
+
 	
 	//Terminal type
-	public Object visitTBoolean(TBoolean tBoolean, Object arg) throws SemanticException;
+	public Object visitTBoolean(TBoolean tBoolean, Object arg) ;
 	
-	public Object visitIdentifier(Identifier identifier, Object arg) throws SemanticException;
+	public Object visitIdentifier(Identifier identifier, Object arg) ;
 	
-	public Object visitTinteger(Tinteger tinteger, Object arg) throws SemanticException;
+	public Object visitTinteger(Tinteger tinteger, Object arg);
 	
-	public Object visitTOpAr(TOpAr tOpAr, Object arg) throws SemanticException;
+	public Object visitTOpAr(TOpAr tOpAr, Object arg);
 	
-	public Object visitTOpBool(TOpBool tOpBool, Object arg) throws SemanticException;
+	public Object visitTOpBool(TOpBool tOpBool, Object arg) ;
 	
-	public Object visitTOpMul(TOpMul tOpMul, Object arg) throws SemanticException;
+	public Object visitTOpMul(TOpMul tOpMul, Object arg) ;
 	
-	public Object visitTypeAst(TypeAst typeAst, Object arg) throws SemanticException;
+	public Object visitTypeAst(TypeAst typeAst, Object arg) ;
 	
-	public Object visitVarDeclaration(VarDeclaration varDeclaration, Object arg) throws SemanticException;
+	public Object visitVarDeclaration(VarDeclaration varDeclaration, Object arg) ;
 	
-	//Types Stmt
-	public Object visitVarDeclarationStmt(VarDeclarationStmt varDeclarationStmt, Object arg) throws SemanticException;
+	
+	
 	
 }

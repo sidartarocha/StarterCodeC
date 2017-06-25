@@ -1,5 +1,8 @@
 package util.AST;
 
+import checker.SemanticException;
+import checker.Visitor;
+
 public class StarVarStmt extends Statement{
 	
 	private Identifier identifier;
@@ -24,6 +27,10 @@ public class StarVarStmt extends Statement{
         
         
 		return s.toString();
+	}
+
+	public Object visit(Visitor v, Object arg) throws SemanticException {
+		return v.visitStarVarStmt(this, arg);
 	}
 	
 }

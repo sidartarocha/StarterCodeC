@@ -2,6 +2,9 @@ package util.AST;
 
 import java.util.List;
 
+import checker.SemanticException;
+import checker.Visitor;
+
 public class IterationStmt extends Statement {
 
 	private final Expression expression;
@@ -43,6 +46,13 @@ public class IterationStmt extends Statement {
         s.append("IterationStmt End (WHILE) \n");
         
         return s.toString();
+	}
+
+
+
+
+	public Object visit(Visitor v, Object arg) throws SemanticException {
+		return v.visitIterationStmt(this, arg);
 	}
 
 }

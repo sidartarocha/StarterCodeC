@@ -1,12 +1,12 @@
 package util.AST;
 
+import checker.SemanticException;
+import checker.Visitor;
+
 public class SimpleExpression extends AST{
 	private Term headTerm;
 	private TOpAr opAr;
 	private Term bodyTerm;
-	
-	
-	
 	
 	public SimpleExpression(Term headTerm, TOpAr opAr, Term bodyTerm) {
 		super();
@@ -14,10 +14,7 @@ public class SimpleExpression extends AST{
 		this.opAr = opAr;
 		this.bodyTerm = bodyTerm;
 	}
-
-
-
-
+	
 	@Override
 	public String toString(int level) {
 		  StringBuilder s = new StringBuilder();
@@ -40,6 +37,11 @@ public class SimpleExpression extends AST{
 	        s.append(this.getSpaces(level));
 	        s.append("SimpleExpression End\n");
 	        return s.toString();
+	}
+
+
+	public Object visit(Visitor v, Object arg) throws SemanticException {
+		return v.visitSimpleExpression(this, arg);
 	}
 	
 	

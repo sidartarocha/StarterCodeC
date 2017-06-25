@@ -1,5 +1,8 @@
 package util.AST;
 
+import checker.SemanticException;
+import checker.Visitor;
+
 public class FactorNumber extends FactorExpression {
 	private Tinteger number;
 	
@@ -26,5 +29,10 @@ public class FactorNumber extends FactorExpression {
 	        s.append("Number End\n");
 	        return s.toString();
 	    }
+
+
+	public Object visit(Visitor v, Object arg) throws SemanticException {
+		return v.visitFactorNumber(this, arg);
+	}
 
 }

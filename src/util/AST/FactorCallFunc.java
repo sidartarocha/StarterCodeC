@@ -1,5 +1,8 @@
 package util.AST;
 
+import checker.SemanticException;
+import checker.Visitor;
+
 public class FactorCallFunc extends FactorExpression{
 
 	private final Identifier identifier;
@@ -33,6 +36,11 @@ public class FactorCallFunc extends FactorExpression{
         s.append("Factor Call Func End \n");
         
         return s.toString();
+	}
+
+
+	public Object visit(Visitor v, Object arg) throws SemanticException {
+		return v.visitFactorCallFunc(v, arg);
 	}
 
 }

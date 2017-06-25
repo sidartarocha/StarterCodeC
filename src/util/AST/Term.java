@@ -1,5 +1,8 @@
 package util.AST;
 
+import checker.SemanticException;
+import checker.Visitor;
+
 public class Term extends AST{
 	private FactorExpression headFactor;
 	private TOpMul opMul;
@@ -34,6 +37,10 @@ public class Term extends AST{
 	        s.append(this.getSpaces(level));
 	        s.append("Term End\n");
 	        return s.toString();
+	}
+
+	public Object visit(Visitor v, Object arg) throws SemanticException {
+		return v.visitTerm(this, arg);
 	}
 
 }

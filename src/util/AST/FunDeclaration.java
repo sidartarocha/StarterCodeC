@@ -2,6 +2,9 @@ package util.AST;
 
 import java.util.ArrayList;
 
+import checker.SemanticException;
+import checker.Visitor;
+
 public class FunDeclaration extends AST {
 
 	private TypeAst auxType;
@@ -50,5 +53,10 @@ public class FunDeclaration extends AST {
 
         return s.toString();
     }
+
+
+	public Object visit(Visitor v, Object arg) throws SemanticException {
+		return v.visitFunDeclaration(this, arg);
+	}
 	
 }

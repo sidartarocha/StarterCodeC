@@ -1,5 +1,7 @@
 package util.AST;
 
+import checker.SemanticException;
+import checker.Visitor;
 import scanner.Token;
 
 public class Tinteger extends Terminal{
@@ -12,6 +14,10 @@ public class Tinteger extends Terminal{
 	@Override
 	public String toString() {
 		return this.getToken().getSpelling();
+	}
+
+	public Object visit(Visitor v, Object arg) throws SemanticException {
+		return v.visitTinteger(this, arg);
 	}
 
 }

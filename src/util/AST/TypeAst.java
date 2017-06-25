@@ -1,5 +1,7 @@
 package util.AST;
 
+import checker.SemanticException;
+import checker.Visitor;
 import scanner.Token;
 
 public class TypeAst extends Terminal {
@@ -13,6 +15,12 @@ public class TypeAst extends Terminal {
 	    public String toString() {
 	        return this.getToken().getKind().name();
 	    }
+
+
+	@Override
+	public Object visit(Visitor v, Object arg) throws SemanticException {
+		return v.visitTypeAst(this, arg);
+	}
 
 
 	

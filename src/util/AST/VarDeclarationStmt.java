@@ -2,6 +2,9 @@ package util.AST;
 
 import java.util.ArrayList;
 
+import checker.SemanticException;
+import checker.Visitor;
+
 public class VarDeclarationStmt extends Statement{
 	
 	private TypeAst auxType;
@@ -36,5 +39,10 @@ public class VarDeclarationStmt extends Statement{
         s.append("Var Declaration Statement End \n");
         return s.toString();
     }
+
+
+	public Object visit(Visitor v, Object arg) throws SemanticException {
+		return v.visitVarDeclarationStmt(this, arg);
+	}
 	
 }

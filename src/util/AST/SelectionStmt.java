@@ -2,6 +2,9 @@ package util.AST;
 
 import java.util.List;
 
+import checker.SemanticException;
+import checker.Visitor;
+
 public class SelectionStmt extends Statement{
 	private final Expression expression;
 	private final List<Statement> statement;
@@ -33,6 +36,10 @@ public class SelectionStmt extends Statement{
         s.append("SelectionStmt End (IF) \n");
         
         return s.toString();
+	}
+
+	public Object visit(Visitor v, Object arg) throws SemanticException {
+		return v.visitSelectionStmt(this, arg);
 	}
 
 }

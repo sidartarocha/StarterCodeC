@@ -1,5 +1,7 @@
 package util.AST;
 
+import checker.SemanticException;
+import checker.Visitor;
 import scanner.Token;
 
 public class Identifier extends Terminal{
@@ -17,6 +19,11 @@ public class Identifier extends Terminal{
     
         return s.toString();
     }
+
+
+	public Object visit(Visitor v, Object arg) throws SemanticException {
+		return v.visitIdentifier(this, arg);
+	}
 
 	
 }
