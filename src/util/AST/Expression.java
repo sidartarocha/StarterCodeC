@@ -4,9 +4,9 @@ import checker.SemanticException;
 import checker.Visitor;
 
 public class Expression extends AST {
-	private final SimpleExpression head;
-	private final TBoolean opBool;
-	private final SimpleExpression body;
+	public final SimpleExpression head;
+	public final TBoolean opBool;
+	public final SimpleExpression body;
 	
 	
 	

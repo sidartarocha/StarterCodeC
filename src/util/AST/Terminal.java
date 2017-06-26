@@ -3,7 +3,7 @@ package util.AST;
 import scanner.Token;
 
 public abstract class Terminal extends AST {
-	private Token token;
+	public Token token;
 	
 	public Terminal(Token token){
 		this.token = token;
@@ -20,6 +20,7 @@ public abstract class Terminal extends AST {
     public String toString(int level) {
         return this.toString();
     }
+	
 	
 	
 	

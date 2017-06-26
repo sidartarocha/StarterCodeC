@@ -4,9 +4,9 @@ import checker.SemanticException;
 import checker.Visitor;
 
 public class Term extends AST{
-	private FactorExpression headFactor;
-	private TOpMul opMul;
-	private FactorExpression bodyFactor;
+	public FactorExpression headFactor;
+	public TOpMul opMul;
+	public FactorExpression bodyFactor;
 	
 	public Term(FactorExpression headFactor, TOpMul opMul, FactorExpression bodyFactor) {
 		super();

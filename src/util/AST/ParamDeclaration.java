@@ -5,8 +5,8 @@ import checker.Visitor;
 
 public class ParamDeclaration extends AST{
 
-	private final TypeAst auxType;
-	private final Identifier auxID;
+	public final TypeAst auxType;
+	public final Identifier auxID;
 	
 	public ParamDeclaration(TypeAst auxType, Identifier auxID) {
 		super();

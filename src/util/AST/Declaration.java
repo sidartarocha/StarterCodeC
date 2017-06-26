@@ -6,8 +6,8 @@ import checker.SemanticException;
 import checker.Visitor;
 
 public class Declaration extends AST{
-	private ArrayList<VarDeclaration> varD;
-	private ArrayList<FunDeclaration> funcD;
+	public ArrayList<VarDeclaration> varD;
+	public ArrayList<FunDeclaration> funcD;
 
 	
 	public Declaration(ArrayList<VarDeclaration> varD, ArrayList<FunDeclaration> funcD) {

@@ -1,5 +1,7 @@
 package compiler;
 
+import checker.Checker;
+import checker.SemanticException;
 import parser.Parser;
 import parser.SyntacticException;
 import scanner.LexicalException;
@@ -22,28 +24,38 @@ public class Compiler {
 	 * Compiler start point
 	 * @param args - none
 	 * @throws LexicalException 
+	 * @throws SemanticException 
 	 */
-	public static void main(String[] args) throws LexicalException {
+	public static void main(String[] args) throws LexicalException, SemanticException {
 		// Initializes the identification table with the reserved words 
 		Compiler.initIdentificationTable();
 		
 		// Creates the parser object
 		Parser p ;//= new Parser();
-		
+		Checker c ;//= null;
 		// Creates the AST object
 		AST astRoot = null;
 		
 		try {
 			// Parses the source code
 			p = new Parser();
+			c = new Checker();
 			astRoot = p.parse();
-			//System.out.println("\n-- AST STRUCTURE --");
+			System.out.println("\n-- AST STRUCTURE --");
 			if ( astRoot != null ) {
 				System.out.println(astRoot.toString(0));
+				System.out.println("\n-- AST STRUCTURE END --");
 			}
+			  	System.out.println ("Contextual Analysis Init");
+			  	c.check(astRoot);
+			  	c.toString();
+			  	System.out.println ("Contextual Analysis End");
 		} catch (SyntacticException e) {
 			// Shows the syntactic/lexical error stack trace 
 			e.printStackTrace();
+		} catch (SemanticException ex) {
+			// TODO: handle exception
+			ex.printStackTrace();
 		}
 	}
 	

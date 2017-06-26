@@ -7,8 +7,8 @@ import checker.Visitor;
 
 public class VarDeclaration extends AST{
 	
-	private TypeAst auxType;
-	private ArrayList<Identifier> auxIDlist;
+	public TypeAst auxType;
+	public ArrayList<Identifier> auxIDlist;
 
 	public VarDeclaration(TypeAst auxType, ArrayList<Identifier> auxIDlist) {
 		this.auxType = auxType;

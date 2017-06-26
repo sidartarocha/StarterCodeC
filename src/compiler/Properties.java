@@ -11,6 +11,7 @@ public interface Properties {
 
 	// The source code file
 	
-		public static final String sourceCodeLocation = "exemplos/exemplo (" + 16 + ").c";
+		public static final String sourceCodeLocation = "program.c"; 
+				//"exemplos/exemplo (" + 16 + ").c";
 	
 }

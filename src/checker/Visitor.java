@@ -49,13 +49,13 @@ public interface Visitor {
 	
 	public Object visitTerminal(Terminal terminal, Object arg) throws SemanticException;
 	//Types terminal Stmt ?
-	public Object visitVarDeclarationStmt(VarDeclarationStmt varDeclarationStmt, Object arg) ;
+	public Object visitVarDeclarationStmt(VarDeclarationStmt varDeclarationStmt, Object arg) throws SemanticException ;
 
 	
 	//Terminal type
 	public Object visitTBoolean(TBoolean tBoolean, Object arg) ;
 	
-	public Object visitIdentifier(Identifier identifier, Object arg) ;
+	public Object visitIdentifier(Identifier identifier, Object arg) throws SemanticException ;
 	
 	public Object visitTinteger(Tinteger tinteger, Object arg);
 	
@@ -67,7 +67,7 @@ public interface Visitor {
 	
 	public Object visitTypeAst(TypeAst typeAst, Object arg) ;
 	
-	public Object visitVarDeclaration(VarDeclaration varDeclaration, Object arg) ;
+	public Object visitVarDeclaration(VarDeclaration varDeclaration, Object arg) throws SemanticException ;
 	
 	
 	

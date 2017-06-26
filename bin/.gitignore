@@ -1,5 +1,5 @@
 /checker/
-/parser/
-/util/
 /compiler/
+/parser/
 /scanner/
+/util/

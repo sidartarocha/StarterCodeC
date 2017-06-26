@@ -5,8 +5,8 @@ import checker.Visitor;
 import scanner.Token;
 
 public class Command extends Statement {
-	Token token;
-	Expression expression;
+	public Token token;
+	public Expression expression;
 	
 		public Command(Token token, Expression expression) {
 		super();

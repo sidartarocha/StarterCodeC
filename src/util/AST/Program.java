@@ -6,17 +6,18 @@ import checker.SemanticException;
 import checker.Visitor;
 
 public class Program extends AST{
-	private ArrayList<Declaration> declarations;
+	public ArrayList<Declaration> declarationList;
 
 	public Program(ArrayList<Declaration> declarations) {
-		this.declarations = declarations;
+		super();
+		declarationList = declarations;
 	}
 
 	/**
 	 * @return the declaration
 	 */
 	public ArrayList<Declaration> getDeclaration() {
-		return declarations;
+		return declarationList;
 	}
 	
 	@Override
@@ -24,7 +25,7 @@ public class Program extends AST{
         StringBuilder s = new StringBuilder();
         s.append("Program Start\n");
         //s.append(level + 1);
-        for(Declaration decl : declarations){
+        for(Declaration decl : declarationList){
         	//s.append("	");
         	s.append(decl.toString(level + 1));
         	//s.append("	");

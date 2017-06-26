@@ -4,9 +4,9 @@ import checker.SemanticException;
 import checker.Visitor;
 
 public class SimpleExpression extends AST{
-	private Term headTerm;
-	private TOpAr opAr;
-	private Term bodyTerm;
+	public Term headTerm;
+	public TOpAr opAr;
+	public Term bodyTerm;
 	
 	public SimpleExpression(Term headTerm, TOpAr opAr, Term bodyTerm) {
 		super();

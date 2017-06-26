@@ -7,10 +7,10 @@ import checker.Visitor;
 
 public class FunDeclaration extends AST {
 
-	private TypeAst auxType;
-	private Identifier auxID;
-	private ArrayList<ParamDeclaration> paramDeclaration;
-	private ArrayList<Statement> statement;
+	public TypeAst auxType;
+	public Identifier auxID;
+	public ArrayList<ParamDeclaration> paramDeclaration;
+	public ArrayList<Statement> statement;
 
 	public FunDeclaration(TypeAst auxType, Identifier auxID , ArrayList<ParamDeclaration> paramDeclaration, ArrayList<Statement> statement) {
 		this.auxType = auxType;

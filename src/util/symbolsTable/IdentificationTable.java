@@ -31,7 +31,7 @@ public class IdentificationTable {
 		// Puts in the table each language reserved word
 		this.table.put(new Key(0, "void"), null);
 		this.table.put(new Key(0, "int"), null);
-		this.table.put(new Key(0, "double"), null);
+//		this.table.put(new Key(0, "double"), null);
 		this.table.put(new Key(0, "boolean"), null);
 		this.table.put(new Key(0, "if"), null);
 		this.table.put(new Key(0, "else"), null);
@@ -39,7 +39,7 @@ public class IdentificationTable {
 		this.table.put(new Key(0, "return"), null);
 		this.table.put(new Key(0, "break"), null);
 		this.table.put(new Key(0, "continue"), null);
-		this.table.put(new Key(0, "println"), null);
+		this.table.put(new Key(0, "printf"), null);
 		this.table.put(new Key(0, "false"), null);
 		this.table.put(new Key(0, "true"), null);
 
@@ -99,7 +99,7 @@ public class IdentificationTable {
 		// If exists
 		} else {
 			// Raises a semantic exception
-			throw new SemanticException("Identifier " + id + " already defined.");
+			throw new SemanticException("Identifier: " + id + " already defined.");
 		}
 	}
 	

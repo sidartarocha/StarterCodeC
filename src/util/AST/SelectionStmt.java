@@ -6,8 +6,8 @@ import checker.SemanticException;
 import checker.Visitor;
 
 public class SelectionStmt extends Statement{
-	private final Expression expression;
-	private final List<Statement> statement;
+	public final Expression expression;
+	public final List<Statement> statement;
 	
 	
 	public SelectionStmt(Expression expression, List<Statement> statement) {

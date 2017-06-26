@@ -5,8 +5,8 @@ import checker.Visitor;
 
 public class StarVarStmt extends Statement{
 	
-	private Identifier identifier;
-	private Expression expression;
+	public Identifier identifier;
+	public Expression expression;
 	
 	public StarVarStmt(Identifier identifier, Expression expression) {
 		super();

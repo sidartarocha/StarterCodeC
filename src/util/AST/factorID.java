@@ -1,7 +1,10 @@
 package util.AST;
 
+import checker.SemanticException;
+import checker.Visitor;
+
 public class FactorID extends FactorExpression {
-	private Identifier tIdentifier;
+	public Identifier tIdentifier;
 	
 	
 	
@@ -27,6 +30,13 @@ public class FactorID extends FactorExpression {
 	        
 	        
 	        return s.toString();
+	}
+
+
+
+	public Object visit(Visitor v, Object arg) throws SemanticException {
+		return v.visitFactorId(this, arg);
+		
 	}
 	
 	
